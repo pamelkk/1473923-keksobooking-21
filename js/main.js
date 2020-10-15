@@ -1,4 +1,5 @@
 "use strict";
+
 const offerType = ["palace", "flat", "house", "bungalow"];
 const offerCheckIn = ["12:00", "13:00", "14:00"];
 const offerCheckOut = ["12:00", "13:00", "14:00"];
@@ -18,6 +19,9 @@ const newPin = pinTemplate.querySelector(".map__pin");
 const pinList = document.querySelector(".map__pins");
 const PIN_OFFSET_X = 32;
 const PIN_OFFSET_Y = 87;
+const cardTemplate = document.querySelector("#card").content;
+const newCard = pinTemplate.querySelector(".map__card");
+const cardList = document.querySelector(".card-wrapper");
 
 map.classList.remove(".map--faded");
 
@@ -28,7 +32,7 @@ const getRandomElement = function (elements) {
   return randomElement;
 };
 
-// Выбор рандомного фитчера, фото и аватара
+// Выбор рандомного фитчера и фото
 
 function shuffle(array) {
   let currentIndex = array.length, temporaryValue, randomIndex;
@@ -43,44 +47,52 @@ function shuffle(array) {
   return array;
 }
 
-let randomFeatures = shuffle(offerFeatures);
-let randomPhotos = shuffle(photos);
-let randomAvatar = "img/avatars/user" + "0" + (shuffle(avatars)) + ".png";
+// Аватар
+
+let getAvatars = function (numbers) {
+  for (let i = 0; i < numbers.length; i++) {
+    let avatar = "img/avatars/user" + "0" + numbers[i] + ".png";
+    return avatar;
+  }
+  return getAvatars;
+};
+
+getAvatars(avatars);
 
 // Рандомные координаты
 
 function randomInteger(min, max) {
-  let rand = min + Math.random() * (max + 1 - min);
+  const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 }
 
-let coordinateX = randomInteger(COORDINATE_X_MIN, COORDINATE_X_MAX);
-let coordinateY = randomInteger(COORDINATE_Y_MIN, COORDINATE_Y_MAX);
+randomInteger(COORDINATE_X_MIN, COORDINATE_X_MAX);
+randomInteger(COORDINATE_Y_MIN, COORDINATE_Y_MAX);
 
 
-let createAnnouncement = function (amount) {
+const createAnnouncements = function (amount) {
   let announcements = [];
   for (let i = 0; i < amount; i++) {
     let announcement = {
       author: {
-        avatar: randomAvatar
+        avatar: getAvatars(avatars)
       },
       offer: {
         title: "Уютная квартира",
-        address: ["{{location.x}}", "{{location.y}}"],
+        address: ["randomInteger(COORDINATE_X_MIN, COORDINATE_X_MAX)", "randomInteger(COORDINATE_Y_MIN, COORDINATE_Y_MAX)"],
         price: getRandomElement(offerPrice),
         type: getRandomElement(offerType),
         rooms: getRandomElement(offerRooms),
         guests: getRandomElement(offerGuests),
         checkin: getRandomElement(offerCheckIn),
         checkout: getRandomElement(offerCheckOut),
-        features: randomFeatures,
+        features: shuffle(offerFeatures),
         description: "Ну очень уютная квартира",
-        photos: randomPhotos
+        photos: shuffle(photos)
       },
       location: {
-        x: coordinateX,
-        y: coordinateY
+        x: randomInteger(COORDINATE_X_MIN, COORDINATE_X_MAX),
+        y: randomInteger(COORDINATE_Y_MIN, COORDINATE_Y_MAX)
       }
     };
     announcements.push(announcement);
@@ -88,7 +100,7 @@ let createAnnouncement = function (amount) {
   return announcements;
 };
 
-let announcementsArr = createAnnouncement(8);
+let announcementItems = createAnnouncements(8);
 
 const createPins = function (items) {
   let pinItems = [];
@@ -96,24 +108,56 @@ const createPins = function (items) {
     const pinElements = pinTemplate.cloneNode(true);
     newPin.style.top = location.y - PIN_OFFSET_Y + "px";
     newPin.style.left = location.x - PIN_OFFSET_X + "px";
-    newPin.querySelector("img").src = author.avatar;
-    newPin.querySelector("img").alt = offer.title;
+    newPin.querySelector("img").src = items[i].author.avatar;
+    newPin.querySelector("img").alt = items[i].offer.title;
     pinItems.push(pinElements);
   }
   return pinItems;
 };
 
-let pinElements = createPins(announcementsArr);
+const pinElements = createPins(announcementItems);
 
 // Рисую элементы меток
 
 const fragment = document.createDocumentFragment();
 
-let renderElements = function (elements) {
+const renderPins = function (elements) {
   for (let i = 0; i < pinElements.length; i++) {
     elements = pinElements;
     fragment.appendChild(elements[i]);
     pinList.appendChild(fragment);
   }
 };
-renderElements(pinElements);
+renderPins(pinElements);
+
+const createCards = function (items) {
+  let cardItems = [];
+  for (let i = 0; i < items.length; i++) {
+    const cardElements = cardTemplate.cloneNode(true);
+
+    newCard.querySelector(".popup__title").textContent = items[i].offer.title;
+    newCard.querySelector(".popup__text--address").textContent = items[i].offer.address;
+    newCard.querySelector(".popup__popup__text--price").textContent = items[i].offer.price + "₽/ночь";
+    newCard.querySelector(".popup__type").textContent = items[i].offer.type;
+    newCard.querySelector(".popup__text--capacity").textContent = items[i].offer.rooms + " " + "комнаты для" + items[i].offer.guests;
+    newCard.querySelector(".popup__text--time").textContent = "Заезд после" + items[i].offer.checkin + ", выезд до" + items[i].offer.checkout;
+    newCard.querySelector(".popup__features").textContent = items[i].offer.features;
+    newCard.querySelector(".popup__description").textContent = items[i].offer.description;
+    newCard.querySelector(".popup__photos").src = items[i].offer.photos;
+    newCard.querySelector(".popup__avatar").src = items[i].author.avatar;
+
+    cardItems.push(cardElements);
+  }
+  return cardItems;
+};
+
+const cardElements = createCards(announcementItems);
+
+const renderCards = function (elements) {
+  for (let i = 0; i < cardElements.length; i++) {
+    elements = cardElements;
+    fragment.appendChild(elements[i]);
+    cardList.appendChild(fragment);
+  }
+};
+renderCards(cardElements);
