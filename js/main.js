@@ -7,7 +7,6 @@ const offerRooms = ["1", "2", "3"];
 const offerGuests = ["1", "2", "3"];
 const offerFeatures = ["wifi", "dishwasher", "parking", "washer", "elevator", "conditioner"];
 const offerPrice = ["1000", "2000", "3000", "4000"];
-const avatars = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const photos = ["http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"];
 const COORDINATE_X_MIN = 0;
 const COORDINATE_X_MAX = 1200;
@@ -47,18 +46,6 @@ function shuffle(array) {
   return array;
 }
 
-// Аватар
-
-let getAvatars = function (numbers) {
-  for (let i = 0; i < numbers.length; i++) {
-    let avatar = "img/avatars/user" + "0" + numbers[i] + ".png";
-    return avatar;
-  }
-  return getAvatars;
-};
-
-getAvatars(avatars);
-
 // Рандомные координаты
 
 function randomInteger(min, max) {
@@ -66,16 +53,12 @@ function randomInteger(min, max) {
   return Math.floor(rand);
 }
 
-randomInteger(COORDINATE_X_MIN, COORDINATE_X_MAX);
-randomInteger(COORDINATE_Y_MIN, COORDINATE_Y_MAX);
-
-
 const createAnnouncements = function (amount) {
   let announcements = [];
   for (let i = 0; i < amount; i++) {
     let announcement = {
       author: {
-        avatar: getAvatars(avatars)
+        avatar: "img/avatars/user" + "0" + amount + ".png"
       },
       offer: {
         title: "Уютная квартира",
@@ -106,8 +89,8 @@ const createPins = function (items) {
   let pinItems = [];
   for (let i = 0; i < items.length; i++) {
     const pinElements = pinTemplate.cloneNode(true);
-    newPin.style.top = location.y - PIN_OFFSET_Y + "px";
-    newPin.style.left = location.x - PIN_OFFSET_X + "px";
+    newPin.style.top = items[i].location.y - PIN_OFFSET_Y + "px";
+    newPin.style.left = items[i].location.x - PIN_OFFSET_X + "px";
     newPin.querySelector("img").src = items[i].author.avatar;
     newPin.querySelector("img").alt = items[i].offer.title;
     pinItems.push(pinElements);
@@ -153,11 +136,8 @@ const createCards = function (items) {
 
 const cardElements = createCards(announcementItems);
 
-const renderCards = function (elements) {
-  for (let i = 0; i < cardElements.length; i++) {
-    elements = cardElements;
-    fragment.appendChild(elements[i]);
-    cardList.appendChild(fragment);
-  }
+const renderCard = function (element) {
+  fragment.appendChild(element);
+  cardList.appendChild(fragment);
 };
-renderCards(cardElements);
+renderCard(cardElements[2]);
