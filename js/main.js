@@ -22,10 +22,11 @@ const pinList = document.querySelector(".map__pins");
 const PIN_OFFSET_X = 32;
 const PIN_OFFSET_Y = 87;
 const cardTemplate = document.querySelector("#card").content;
-const photosClass = document.querySelector(".popup__photos");
-const firstChildOfPhotos = document.querySelector("popup__photo");
+const photosClass = cardTemplate.querySelector(".popup__photos");
+const firstChildOfPhotos = cardTemplate.querySelector(".popup__photo");
 const capacity = document.querySelector("#capacity");
 const roomNumber = document.querySelector("#room_number");
+const cardList = document.querySelector(".card-wrapper");
 
 map.classList.remove(".map--faded");
 
@@ -46,13 +47,14 @@ function randomInteger(min, max) {
 // Выбор рандомного фитчера и фото
 
 const getRandomPhotoFeature = function (items) {
-  let begin = getRandomElement(items);
-  let end = getRandomElement(items);
-  while (begin >= end) {
-    begin = getRandomElement(items);
-    end = getRandomElement(items);
+  let i = 0;
+  let begin = randomInteger(i, items.length);
+  let end = randomInteger(i, items.length);
+  while (items[begin] >= items[end]) {
+    begin = randomInteger(i, items.length);
+    end = randomInteger(i, items.length);
   }
-  return items.slice(begin, end);
+  return items.slice(items[begin], items[end]);
 };
 
 const createAnnouncements = function (amount) {
@@ -122,21 +124,46 @@ const renderPins = function (elements) {
 };
 renderPins(pinElements);
 
+// добавляю фото
+
 const getPhotoItem = function (items) {
   let photoItems = [];
-  for (let i = 0; i < items.length; i++) {
+  for (let i = 0; i < items.length - 1; i++) {
+    firstChildOfPhotos.src = items[randomInteger(i, items.length - 1)];
     const photoItem = document.createElement("img");
     photoItem.classList.add("popup__photo");
-    photoItem.src = items[i];
+    photoItem.src = items[randomInteger(i, items.length - 1)];
+    photoItem.style.width = 45 + "px";
+    photoItem.style.height = 40 + "px";
+    photoItem.alt = "Фотография жилья";
     photosClass.insertBefore(photoItem, firstChildOfPhotos);
     photoItems.push(photoItem);
   }
+  return photoItems;
 };
-getPhotoItem(announcementItems[2].offer.photos);
+getPhotoItem(getRandomElement(announcementItems).offer.photos);
+
+// фитчи
+
+let getFeatures = function (classListItems) {
+  let featureElements = cardTemplate.querySelectorAll(".popup__feature");
+  for (let featureElement of featureElements) {
+    for (let i = 0; i < classListItems.length; i++) {
+      if (!featureElement.className.includes(classListItems[i])) {
+        featureElement.classList.add("visually-hidden");
+      }
+    }
+    return featureElement;
+  }
+  return featureElements;
+};
+let resultB = getFeatures(getRandomElement(announcementItems).offer.features);
+console.log(resultB);
+
+// создаю карточку
 
 const createCard = function (item) {
   const cardElement = cardTemplate.cloneNode(true);
-  const cardList = document.querySelector(".card-wrapper");
 
   cardElement.querySelector(".popup__title").textContent = item.offer.title;
   cardElement.querySelector(".popup__text--address").textContent = item.offer.address;
@@ -145,21 +172,8 @@ const createCard = function (item) {
   cardElement.querySelector(".popup__text--capacity").textContent = item.offer.rooms + " " + "комнаты для " + item.offer.guests + " гостей";
   cardElement.querySelector(".popup__text--time").textContent = "Заезд после " + item.offer.checkin + ", выезд до " + item.offer.checkout;
   cardElement.querySelector(".popup__description").textContent = item.offer.description;
-  if (!cardElement.querySelector(".popup__features").classList.contains("popup__feature--wifi")) {
-    cardElement.querySelector(".popup__feature--wifi").classList.add("visually-hidden");
-  } else if (!cardElement.querySelector(".popup__features").classList.contains("popup__feature--dishwasher")) {
-    cardElement.querySelector(".popup__feature--dishwasher").classList.add("visually-hidden");
-  } else if (!cardElement.querySelector(".popup__features").classList.contains("popup__feature--parking")) {
-    cardElement.querySelector(".popup__feature--parking").classList.add("visually-hidden");
-  } else if (!cardElement.querySelector(".popup__features").classList.contains("popup__feature--washer")) {
-    cardElement.querySelector(".popup__feature--washer").classList.add("visually-hidden");
-  } else if (!cardElement.querySelector(".popup__features").classList.contains("popup__feature--elevator")) {
-    cardElement.querySelector(".popup__feature--elevator").classList.add("visually-hidden");
-  } else if (!cardElement.querySelector(".popup__features").classList.contains("popup__feature--conditioner")) {
-    cardElement.querySelector(".popup__feature--conditioner").classList.add("visually-hidden");
-  }
-  cardElement.querySelector(".popup__feature").textContent = item.offer.features;
   cardElement.querySelector(".popup__avatar").src = item.author.avatar;
+
   cardList.appendChild(cardElement);
 };
 
@@ -172,5 +186,3 @@ roomNumber.addEventListener("change", function () {
     capacity.value = 1;
   }
 });
-
-
