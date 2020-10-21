@@ -158,7 +158,6 @@ let getFeatures = function (classListItems) {
   return featureElements;
 };
 let resultB = getFeatures(getRandomElement(announcementItems).offer.features);
-console.log(resultB);
 
 // создаю карточку
 
