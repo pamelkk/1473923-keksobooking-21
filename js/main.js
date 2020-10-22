@@ -12,6 +12,8 @@ const COORDINATE_X_MIN = 0;
 const COORDINATE_X_MAX = 1200;
 const COORDINATE_Y_MIN = 130;
 const COORDINATE_Y_MAX = 630;
+const IMG_CARD_WIDTH = 45 + "px";
+const IMG_CARD_HEIGHT = 40 + "px";
 const map = document.querySelector(".map");
 const form = document.querySelector(".ad-form");
 const filters = document.querySelector(".map__filters");
@@ -23,10 +25,10 @@ const PIN_OFFSET_X = 32;
 const PIN_OFFSET_Y = 87;
 const cardTemplate = document.querySelector("#card").content;
 const photosClass = cardTemplate.querySelector(".popup__photos");
-const firstChildOfPhotos = cardTemplate.querySelector(".popup__photo");
 const capacity = document.querySelector("#capacity");
 const roomNumber = document.querySelector("#room_number");
 const cardList = document.querySelector(".card-wrapper");
+const submitButton = document.querySelector(".ad-form__submit");
 
 map.classList.remove(".map--faded");
 
@@ -50,15 +52,15 @@ const getRandomPhotoFeature = function (items) {
   let i = 0;
   let begin = randomInteger(i, items.length);
   let end = randomInteger(i, items.length);
-  while (items[begin] >= items[end]) {
+  while (begin >= end) {
     begin = randomInteger(i, items.length);
     end = randomInteger(i, items.length);
   }
-  return items.slice(items[begin], items[end]);
+  return items.slice(begin, end);
 };
 
 const createAnnouncements = function (amount) {
-  let announcements = [];
+  const announcements = [];
   for (let i = 0; i < amount; i++) {
     const announcement = {
       author: {
@@ -90,7 +92,7 @@ const createAnnouncements = function (amount) {
 const announcementItems = createAnnouncements(8);
 
 const createPins = function (items) {
-  let pinItems = [];
+  const pinItems = [];
   for (let i = 0; i < items.length; i++) {
     const pinElements = pinTemplate.cloneNode(true);
     newPin.style.top = items[i].location.y - PIN_OFFSET_Y + "px";
@@ -126,38 +128,21 @@ renderPins(pinElements);
 
 // добавляю фото
 
-const getPhotoItem = function (items) {
-  let photoItems = [];
-  for (let i = 0; i < items.length - 1; i++) {
-    firstChildOfPhotos.src = items[randomInteger(i, items.length - 1)];
+const getPhotoItems = function (items) {
+  const photoItems = [];
+  for (let i = 0; i < items.length; i++) {
     const photoItem = document.createElement("img");
     photoItem.classList.add("popup__photo");
-    photoItem.src = items[randomInteger(i, items.length - 1)];
-    photoItem.style.width = 45 + "px";
-    photoItem.style.height = 40 + "px";
+    photoItem.src = items[i];
+    photoItem.style.width = IMG_CARD_WIDTH;
+    photoItem.style.height = IMG_CARD_HEIGHT;
     photoItem.alt = "Фотография жилья";
-    photosClass.insertBefore(photoItem, firstChildOfPhotos);
+    photosClass.appendChild(photoItem);
     photoItems.push(photoItem);
   }
   return photoItems;
 };
-getPhotoItem(getRandomElement(announcementItems).offer.photos);
-
-// фитчи
-
-let getFeatures = function (classListItems) {
-  let featureElements = cardTemplate.querySelectorAll(".popup__feature");
-  for (let featureElement of featureElements) {
-    for (let i = 0; i < classListItems.length; i++) {
-      if (!featureElement.className.includes(classListItems[i])) {
-        featureElement.classList.add("visually-hidden");
-      }
-    }
-    return featureElement;
-  }
-  return featureElements;
-};
-let resultB = getFeatures(getRandomElement(announcementItems).offer.features);
+const readyPhotos = getPhotoItems(getRandomElement(announcementItems).offer.photos);
 
 // создаю карточку
 
@@ -172,7 +157,17 @@ const createCard = function (item) {
   cardElement.querySelector(".popup__text--time").textContent = "Заезд после " + item.offer.checkin + ", выезд до " + item.offer.checkout;
   cardElement.querySelector(".popup__description").textContent = item.offer.description;
   cardElement.querySelector(".popup__avatar").src = item.author.avatar;
+  cardElement.querySelector(".popup__photos").src = readyPhotos;
 
+  const featureElements = cardElement.querySelectorAll(".popup__feature");
+  for (const featureElement of featureElements) {
+    for (let i = 0; i < item.offer.features.length; i++) {
+    // показываются только те, что есть в массиве
+      if (featureElement.className.includes(item.offer.features[i])) {
+        featureElement.classList.add("visually-hidden");
+      }
+    }
+  }
   cardList.appendChild(cardElement);
 };
 
@@ -180,8 +175,40 @@ createCard(getRandomElement(announcementItems));
 
 // подсчет комнат и гостей
 
-roomNumber.addEventListener("change", function () {
-  if (roomNumber.value === 1) {
-    capacity.value = 1;
+let CapacityOne;
+
+if (capacity.value === "1" && roomNumber.value === "1") {
+  CapacityOne = true;
+}
+if (capacity.value === "1" && roomNumber.value === "2") {
+  CapacityOne = true;
+}
+if (capacity.value === "1" && roomNumber.value === "3") {
+  CapacityOne = true;
+}
+
+let CapacityTwo;
+
+if (capacity.value === "2" && roomNumber.value === "2") {
+  CapacityTwo = true;
+}
+if (capacity.value === "2" && roomNumber.value === "3") {
+  CapacityTwo = true;
+}
+
+let CapacityThree;
+
+if (capacity.value === "3" && roomNumber.value === "3") {
+  CapacityThree = true;
+}
+console.log(CapacityOne);
+console.log(CapacityTwo);
+console.log(CapacityThree);
+
+submitButton.addEventListener("click", function () {
+  if (!CapacityOne || !CapacityTwo || !CapacityThree) {
+    capacity.setCustomValidity("Количество должно совпадать");
+  } else {
+    capacity.setCustomValidity(``);
   }
 });
