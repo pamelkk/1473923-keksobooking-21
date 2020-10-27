@@ -119,7 +119,6 @@ const fragment = document.createDocumentFragment();
 
 const renderPins = function (elements) {
   for (let i = 0; i < pinElements.length; i++) {
-    elements = pinElements;
     fragment.appendChild(elements[i]);
     pinList.appendChild(fragment);
   }
@@ -130,10 +129,10 @@ renderPins(pinElements);
 
 const getPhotoItems = function (items) {
   const photoItems = [];
-  for (let i = 0; i < items.length; i++) {
+  for (const item of items) {
     const photoItem = document.createElement("img");
     photoItem.classList.add("popup__photo");
-    photoItem.src = items[i];
+    photoItem.src = item;
     photoItem.style.width = IMG_CARD_WIDTH;
     photoItem.style.height = IMG_CARD_HEIGHT;
     photoItem.alt = "Фотография жилья";
@@ -142,7 +141,6 @@ const getPhotoItems = function (items) {
   }
   return photoItems;
 };
-const readyPhotos = getPhotoItems(getRandomElement(announcementItems).offer.photos);
 
 // создаю карточку
 
@@ -157,13 +155,23 @@ const createCard = function (item) {
   cardElement.querySelector(".popup__text--time").textContent = "Заезд после " + item.offer.checkin + ", выезд до " + item.offer.checkout;
   cardElement.querySelector(".popup__description").textContent = item.offer.description;
   cardElement.querySelector(".popup__avatar").src = item.author.avatar;
-  cardElement.querySelector(".popup__photos").src = readyPhotos;
+
+  const fragmentPhoto = document.createDocumentFragment();
+
+  const renderPhotos = function (elements) {
+    for (let element of elements) {
+      fragmentPhoto.appendChild(element);
+      cardElement.querySelector(".popup__photos").appendChild(fragmentPhoto);
+    }
+    return fragmentPhoto;
+  };
+  renderPhotos(getPhotoItems(item.offer.photos));
 
   const featureElements = cardElement.querySelectorAll(".popup__feature");
   for (const featureElement of featureElements) {
-    for (let i = 0; i < item.offer.features.length; i++) {
+    for (const feature of item.offer.features) {
     // показываются только те, что есть в массиве
-      if (featureElement.className.includes(item.offer.features[i])) {
+      if (featureElement.className.includes(feature)) {
         featureElement.classList.add("visually-hidden");
       }
     }
@@ -172,43 +180,14 @@ const createCard = function (item) {
 };
 
 createCard(getRandomElement(announcementItems));
-
 // подсчет комнат и гостей
 
-let CapacityOne;
-
-if (capacity.value === "1" && roomNumber.value === "1") {
-  CapacityOne = true;
-}
-if (capacity.value === "1" && roomNumber.value === "2") {
-  CapacityOne = true;
-}
-if (capacity.value === "1" && roomNumber.value === "3") {
-  CapacityOne = true;
-}
-
-let CapacityTwo;
-
-if (capacity.value === "2" && roomNumber.value === "2") {
-  CapacityTwo = true;
-}
-if (capacity.value === "2" && roomNumber.value === "3") {
-  CapacityTwo = true;
-}
-
-let CapacityThree;
-
-if (capacity.value === "3" && roomNumber.value === "3") {
-  CapacityThree = true;
-}
-console.log(CapacityOne);
-console.log(CapacityTwo);
-console.log(CapacityThree);
-
-submitButton.addEventListener("click", function () {
-  if (!CapacityOne || !CapacityTwo || !CapacityThree) {
-    capacity.setCustomValidity("Количество должно совпадать");
-  } else {
-    capacity.setCustomValidity(``);
+capacity.addEventListener("change", function (evt) {
+  for (let i = 0; i < capacity.options.length; i++) {
+    if (capacity.options[i].value <= evt.target.value) {
+      capacity.setCustomValidity("");
+    } else {
+      capacity.setCustomValidity("Количество гостей должно быть равно или меньше количества комнат");
+    }
   }
 });
