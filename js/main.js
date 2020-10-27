@@ -48,7 +48,7 @@ function randomInteger(min, max) {
 
 // Выбор рандомного фитчера и фото
 
-const getRandomPhotoFeature = function (items) {
+const getRandomPhotoFeatures = function (items) {
   let i = 0;
   let begin = randomInteger(i, items.length);
   let end = randomInteger(i, items.length);
@@ -75,9 +75,9 @@ const createAnnouncements = function (amount) {
         guests: getRandomElement(offerGuests),
         checkin: getRandomElement(offerCheckIn),
         checkout: getRandomElement(offerCheckOut),
-        features: getRandomPhotoFeature(offerFeatures),
+        features: getRandomPhotoFeatures(offerFeatures),
         description: "Ну очень уютная квартира",
-        photos: getRandomPhotoFeature(photos)
+        photos: getRandomPhotoFeatures(photos)
       },
       location: {
         x: randomInteger(COORDINATE_X_MIN, COORDINATE_X_MAX),
@@ -142,6 +142,15 @@ const getPhotoItems = function (items) {
   return photoItems;
 };
 
+const fragmentPhoto = document.createDocumentFragment();
+
+const renderPhotos = function (elements) {
+  for (const element of elements) {
+    fragmentPhoto.appendChild(element);
+  }
+  return fragmentPhoto;
+};
+
 // создаю карточку
 
 const createCard = function (item) {
@@ -156,16 +165,8 @@ const createCard = function (item) {
   cardElement.querySelector(".popup__description").textContent = item.offer.description;
   cardElement.querySelector(".popup__avatar").src = item.author.avatar;
 
-  const fragmentPhoto = document.createDocumentFragment();
-
-  const renderPhotos = function (elements) {
-    for (let element of elements) {
-      fragmentPhoto.appendChild(element);
-      cardElement.querySelector(".popup__photos").appendChild(fragmentPhoto);
-    }
-    return fragmentPhoto;
-  };
   renderPhotos(getPhotoItems(item.offer.photos));
+  cardElement.querySelector(".popup__photos").appendChild(fragmentPhoto);
 
   const featureElements = cardElement.querySelectorAll(".popup__feature");
   for (const featureElement of featureElements) {
