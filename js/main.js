@@ -26,6 +26,8 @@ const newPin = pinTemplate.querySelector(".map__pin");
 const pinList = document.querySelector(".map__pins");
 const PIN_OFFSET_X = 32;
 const PIN_OFFSET_Y = 87;
+const PIN_WIDTH = 50;
+const PIN_HEIGHT = 70;
 const cardTemplate = document.querySelector("#card").content;
 const photosClass = cardTemplate.querySelector(".popup__photos");
 const capacity = document.querySelector("#capacity");
@@ -239,26 +241,6 @@ const makeActive = function () {
   makeEnable(formTextAreas);
 };
 
-mainPin.addEventListener("mousedown", function (evt) {
-  if (evt.which === 1) {
-    makeActive();
-    getAddress();
-  }
-});
-
-mainPin.addEventListener("keydown", function (evt) {
-  if (evt.keyCode === 13) {
-    makeActive();
-    getAddress();
-  }
-});
-
-// установка значения поля ввода адреса
-
-const getAddress = function () {
-
-};
-
 // передвижение главной метки
 
 mainPin.addEventListener("mousedown", function (evt) {
@@ -294,4 +276,44 @@ mainPin.addEventListener("mousedown", function (evt) {
 
   document.addEventListener("mousemove", onMouseMove);
   document.addEventListener("mouseup", onMouseUp);
+});
+
+// установка значения поля ввода адреса
+
+const getAddress = function () {
+  const addressInput = document.querySelector("#address");
+  const coordinateX = parseInt(mainPin.style.left, 10) + (PIN_WIDTH / 2);
+  const coordinateY = parseInt(mainPin.style.top, 10) + PIN_HEIGHT;
+  if (coordinateX > 1200) {
+    coordinateX = 1200;
+  }
+  if (coordinateX < 0) {
+    coordinateX = 0;
+  }
+  if (coordinateY > 633) {
+    coordinateY = 633;
+  }
+  if (coordinateY < 130) {
+    coordinateY = 130;
+  }
+  addressInput.value = coordinateX + "," + coordinateY;
+};
+getAddress();
+
+mainPin.addEventListener("mousedown", function (evt) {
+  if (evt.which === 1) {
+    makeActive();
+  }
+});
+
+mainPin.addEventListener("keydown", function (evt) {
+  if (evt.keyCode === 13) {
+    makeActive();
+  }
+});
+
+mainPin.addEventListener("mousemove", function (evt) {
+  if (evt.which === 1) {
+    getAddress();
+  }
 });
