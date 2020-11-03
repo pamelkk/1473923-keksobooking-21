@@ -123,3 +123,4 @@ mainPin.addEventListener("mousedown", function (evt) {
 
 // установка значения поля ввода адреса
 window.form.getAddress();
+
