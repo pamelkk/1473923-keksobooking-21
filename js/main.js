@@ -10,22 +10,24 @@ const pinTemplate = document.querySelector("#pin").content;
 const newPin = pinTemplate.querySelector(".map__pin");
 const capacity = document.querySelector("#capacity");
 const roomNumber = document.querySelector("#room_number");
+const ENTER_KEYCODE = 13;
+const LEFT_CLICK = 1;
 
 // активация страницы
 mainPin.addEventListener("mousedown", function (evt) {
-  if (evt.which === 1) {
+  if (evt.which === LEFT_CLICK) {
     window.activation.makeActive();
   }
 });
 
 mainPin.addEventListener("keydown", function (evt) {
-  if (evt.keyCode === 13) {
+  if (evt.keyCode === ENTER_KEYCODE) {
     window.activation.makeActive();
   }
 });
 
 mainPin.addEventListener("mousemove", function (evt) {
-  if (evt.which === 1) {
+  if (evt.which === LEFT_CLICK) {
     window.form.getAddress();
   }
 });
@@ -54,9 +56,9 @@ capacity.addEventListener("change", function (evt) {
 });
 
 // делаю поля недоступными для редактирования
-window.form.makeDisable(formInputs);
-window.form.makeDisable(formSelects);
-window.form.makeDisable(formTextAreas);
+window.form.makeEnableDisable(formInputs);
+window.form.makeEnableDisable(formSelects);
+window.form.makeEnableDisable(formTextAreas);
 
 // подсчет комнат и гостей
 
@@ -75,12 +77,12 @@ capacity.addEventListener("change", function (evt) {
 });
 
 // Время заезда/выезда
-form.onchange = function (e) {
+form.addEventListener("change", function (e) {
   const timein = document.querySelector("#timein");
   const timeout = document.querySelector("#timeout");
   timein.value = e.target.value;
   timeout.value = e.target.value;
-};
+});
 
 // передвижение главной метки
 

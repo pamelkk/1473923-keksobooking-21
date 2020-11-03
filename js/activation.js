@@ -6,21 +6,18 @@
   const formInputs = form.querySelectorAll(".ad-form__element input");
   const formSelects = form.querySelectorAll(".ad-form__element select");
   const formTextAreas = form.querySelectorAll(".ad-form__element textarea");
+  const announcementItems = window.announcements.createAnnouncements(8);
+  const pinElements = window.pin.createPins(announcementItems);
 
   window.activation = {
-    makeEnable: function (elements) {
-      for (let element of elements) {
-        element.disabled = false;
-      }
-    },
     makeActive: function () {
       map.classList.remove("map--faded");
       form.classList.remove("ad-form--disabled");
-      window.pin.renderPins(window.pin.pinElements);
+      window.pin.renderPins(pinElements);
 
-      window.activation.makeEnable(formInputs);
-      window.activation.makeEnable(formSelects);
-      window.activation.makeEnable(formTextAreas);
+      window.form.makeEnableDisable(formInputs);
+      window.form.makeEnableDisable(formSelects);
+      window.form.makeEnableDisable(formTextAreas);
     }
   };
 })();

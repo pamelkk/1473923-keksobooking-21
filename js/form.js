@@ -7,9 +7,9 @@
 
   window.form = {
     // перевод полей в неактивное состояние
-    makeDisable: function (elements) {
-      for (let element of elements) {
-        element.disabled = true;
+    makeEnableDisable: function (elements) {
+      for (const element of elements) {
+        element.disabled = !element.disabled;
       }
     },
     // установка значения поля ввода адреса
