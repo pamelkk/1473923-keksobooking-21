@@ -3,6 +3,8 @@
 (function () {
   const cardList = document.querySelector(".card-wrapper");
   const cardTemplate = document.querySelector("#card").content;
+  const ESC_KEYCODE = 27;
+  const LEFT_CLICK = 1;
 
   const appartmentType = {
     flat: "Квартира",
@@ -13,7 +15,7 @@
 
   window.card = {
     createCard: function (item) {
-      const cardElement = cardTemplate.cloneNode(true);
+      const cardElement = cardTemplate.querySelector(".map__card").cloneNode(true);
 
       cardElement.querySelector(".popup__title").textContent = item.offer.title;
       cardElement.querySelector(".popup__text--address").textContent = item.offer.address;
@@ -24,8 +26,8 @@
       cardElement.querySelector(".popup__description").textContent = item.offer.description;
       cardElement.querySelector(".popup__avatar").src = item.author.avatar;
 
-      window.photos.renderPhotos(window.photos.getPhotoItems(item.offer.photos));
-      cardElement.querySelector(".popup__photos").appendChild(window.photos.fragmentPhoto);
+      const cardPhotos = window.photos.renderPhotos(window.photos.getPhotoItems(item.offer.photos));
+      cardElement.querySelector(".popup__photos").appendChild(cardPhotos);
 
       const featureElements = cardElement.querySelectorAll(".popup__feature");
       for (const featureElement of featureElements) {
@@ -36,6 +38,19 @@
           }
         }
       }
+
+      // закрытие карточки
+      cardElement.querySelector(".popup__close").addEventListener("click", function (evt) {
+        if (evt.which === LEFT_CLICK) {
+          cardElement.remove();
+        }
+      });
+
+      document.addEventListener("keydown", function (evt) {
+        if (evt.keyCode === ESC_KEYCODE) {
+          cardElement.remove();
+        }
+      });
       cardList.appendChild(cardElement);
     }
   };

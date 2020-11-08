@@ -46,3 +46,4 @@
     }
   };
 })();
+window.announcements.createAnnouncements(8);
