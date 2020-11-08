@@ -11,6 +11,7 @@
   const reset = form.querySelector(".ad-form__reset");
   const formSelects = form.querySelectorAll(".ad-form__element select");
   const formTextAreas = form.querySelectorAll(".ad-form__element textarea");
+  const formTyme = form.querySelectorAll(".ad-form__element--time");
   const inputType = form.querySelector("#type");
   const inputTitle = form.querySelector("#title");
   const inputDescription = form.querySelector("#description");
@@ -96,7 +97,14 @@
   });
 
   // Время заезда/выезда
-  form.addEventListener("change", function (e) {
+  inputTimeIn.addEventListener("change", function (e) {
+    const timein = document.querySelector("#timein");
+    const timeout = document.querySelector("#timeout");
+    timein.value = e.target.value;
+    timeout.value = e.target.value;
+  });
+
+  inputTimeOut.addEventListener("change", function (e) {
     const timein = document.querySelector("#timein");
     const timeout = document.querySelector("#timeout");
     timein.value = e.target.value;
@@ -105,14 +113,13 @@
 
   // соответствие цена/тип жилья
 
-  const appartmentTypePrice = {
-    flat: "1000",
-    bungalow: "0",
-    house: "5000",
-    palace: "10000"
-  };
-
   inputType.addEventListener("change", function (e) {
+    const appartmentTypePrice = {
+      flat: "1000",
+      bungalow: "0",
+      house: "5000",
+      palace: "10000"
+    };
     inputPrice.min = appartmentTypePrice[e.target.value];
     inputPrice.placeholder = appartmentTypePrice[e.target.value];
   });

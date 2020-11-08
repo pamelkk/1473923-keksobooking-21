@@ -2,7 +2,6 @@
 
 const mainPin = document.querySelector(".map__pin--main");
 const form = document.querySelector(".ad-form");
-const map = document.querySelector(".map");
 
 // передвижение главной метки
 
