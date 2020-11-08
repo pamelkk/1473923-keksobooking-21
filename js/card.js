@@ -5,8 +5,6 @@
   const cardTemplate = document.querySelector("#card").content;
   const ESC_KEYCODE = 27;
   const LEFT_CLICK = 1;
-  const cardElement = cardTemplate.querySelector(".map__card").cloneNode(true);
-  const buttonClose = cardElement.querySelector(".popup__close");
 
   const appartmentType = {
     flat: "Квартира",
@@ -17,6 +15,8 @@
 
   window.card = {
     createCard: function (item) {
+      const cardElement = cardTemplate.querySelector(".map__card").cloneNode(true);
+
       cardElement.querySelector(".popup__title").textContent = item.offer.title;
       cardElement.querySelector(".popup__text--address").textContent = item.offer.address;
       cardElement.querySelector(".popup__text--price").textContent = item.offer.price + "₽/ночь";
@@ -40,7 +40,7 @@
       }
 
       // закрытие карточки
-      buttonClose.addEventListener("click", function (evt) {
+      cardElement.querySelector(".popup__close").addEventListener("click", function (evt) {
         if (evt.which === LEFT_CLICK) {
           cardElement.remove();
         }

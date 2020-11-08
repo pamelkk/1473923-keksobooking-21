@@ -3,13 +3,11 @@
 (function () {
   const pinTemplate = document.querySelector("#pin").content;
   const pinList = document.querySelector(".map__pins");
-  const card = document.querySelector(".map__card");
   const PIN_OFFSET_X = 32;
   const PIN_OFFSET_Y = 87;
   const ENTER_KEYCODE = 13;
   const LEFT_CLICK = 1;
   const fragment = document.createDocumentFragment();
-  const cardList = document.querySelector(".card-wrapper");
 
   window.pin = {
     createPins: function (items) {
@@ -24,8 +22,9 @@
 
         pinClone.querySelector(".map__pin").addEventListener("click", function (evt) {
           if (evt.which === LEFT_CLICK) {
-            if (cardList.contains(card)) {
-              window.card.cardElement.remove();
+            const card = document.querySelector(".map__card");
+            if (card) {
+              card.remove();
             }
             window.card.createCard(items[i]);
           }

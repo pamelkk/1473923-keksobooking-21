@@ -13,7 +13,6 @@
   const COORDINATE_X_MAX = 1200;
   const COORDINATE_Y_MIN = 130;
   const COORDINATE_Y_MAX = 630;
-  const MAX_SIMILAR_ANNOUNCEMENT_COUNT = 8;
 
   window.announcements = {
     createAnnouncements: function (amount) {
