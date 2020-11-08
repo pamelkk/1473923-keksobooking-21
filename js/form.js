@@ -11,7 +11,6 @@
   const reset = form.querySelector(".ad-form__reset");
   const formSelects = form.querySelectorAll(".ad-form__element select");
   const formTextAreas = form.querySelectorAll(".ad-form__element textarea");
-  const formTyme = form.querySelectorAll(".ad-form__element--time");
   const inputType = form.querySelector("#type");
   const inputTitle = form.querySelector("#title");
   const inputDescription = form.querySelector("#description");
