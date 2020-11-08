@@ -2,6 +2,7 @@
 
 const mainPin = document.querySelector(".map__pin--main");
 const form = document.querySelector(".ad-form");
+const map = document.querySelector(".map");
 
 // передвижение главной метки
 
@@ -47,3 +48,49 @@ form.addEventListener("submit", function (evt) {
   evt.preventDefault();
 });
 
+// ограничение главной метки по перемещению
+//* ограничения, за которые нельзя вытащить mainPin
+const limits = {
+  top: map.offsetTop,
+  right: map.offsetWidth - mainPin.offsetWidth,
+  bottom: map.offsetHeight + map.offsetTop - mainPin.offsetHeight,
+  left: map.offsetLeft
+};
+
+//* вкл/выкл режим перетаскивания
+mainPin.onmousedown = function () {
+  mainPin.draggable = true;
+};
+document.onmouseup = function () {
+  mainPin.draggable = false;
+};
+document.onmousemove = function (e) {
+  if (mainPin.draggable) {
+    move(e);
+  }
+};
+
+//* вычисление координат
+function move(e) {
+  const newLocation = {
+    x: limits.left,
+    y: limits.top
+  };
+  if (e.pageX > limits.right) {
+    newLocation.x = limits.right;
+  } else if (e.pageX > limits.left) {
+    newLocation.x = e.pageX;
+  }
+  if (e.pageY > limits.bottom) {
+    newLocation.y = limits.bottom;
+  } else if (e.pageY > limits.top) {
+    newLocation.y = e.pageY;
+  }
+  relocate(newLocation);
+}
+
+//* размещение mainPin
+function relocate(newLocation) {
+  mainPin.style.left = newLocation.x + "px";
+  mainPin.style.top = newLocation.y + "px";
+}
