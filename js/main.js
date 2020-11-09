@@ -60,7 +60,7 @@ mainPin.addEventListener("mousedown", function (evt) {
   document.addEventListener("mouseup", onMouseUp);
 });
 
-var submitHandler = function (evt) {
+const submitHandler = function (evt) {
   window.upload(new FormData(form), function () {
     window.activation.makeInactive();
   });
