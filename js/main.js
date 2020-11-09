@@ -2,12 +2,17 @@
 
 const mainPin = document.querySelector(".map__pin--main");
 const form = document.querySelector(".ad-form");
-const map = document.querySelector(".map");
+const COORDINATE_MIN_Y = 130;
+const COORDINATE_MAX_Y = 630;
+const COORDINATE_MIN_X = 0;
+const COORDINATE_MAX_X = 1200;
+const PIN_TIP_HEIGHT = 22;
 
 // передвижение главной метки
 
 mainPin.addEventListener("mousedown", function (evt) {
   evt.preventDefault();
+  mainPin.style.zIndex = 100;
 
   let startCoords = {
     x: evt.clientX,
@@ -29,6 +34,20 @@ mainPin.addEventListener("mousedown", function (evt) {
 
     mainPin.style.top = (mainPin.offsetTop - shift.y) + "px";
     mainPin.style.left = (mainPin.offsetLeft - shift.x) + "px";
+
+    // X limit
+    if (mainPin.offsetLeft > COORDINATE_MAX_X - mainPin.offsetWidth / 2) {
+      mainPin.style.left = COORDINATE_MAX_X - mainPin.offsetWidth / 2 + "px";
+    } else if (mainPin.offsetLeft < COORDINATE_MIN_X - mainPin.offsetWidth / 2) {
+      mainPin.style.left = COORDINATE_MIN_X - mainPin.offsetWidth / 2 + "px";
+    }
+
+    // Y limit
+    if (mainPin.offsetTop > COORDINATE_MAX_Y - mainPin.offsetHeight - PIN_TIP_HEIGHT) {
+      mainPin.style.top = COORDINATE_MAX_Y - mainPin.offsetHeight - PIN_TIP_HEIGHT + "px";
+    } else if (mainPin.offsetTop < COORDINATE_MIN_Y - mainPin.offsetHeight - PIN_TIP_HEIGHT) {
+      mainPin.style.top = COORDINATE_MIN_Y - mainPin.offsetHeight - PIN_TIP_HEIGHT + "px";
+    }
   };
   let onMouseUp = function (upEvt) {
     upEvt.preventDefault();
@@ -41,56 +60,10 @@ mainPin.addEventListener("mousedown", function (evt) {
   document.addEventListener("mouseup", onMouseUp);
 });
 
-form.addEventListener("submit", function (evt) {
+var submitHandler = function (evt) {
   window.upload(new FormData(form), function () {
     window.activation.makeInactive();
   });
   evt.preventDefault();
-});
-
-// ограничение главной метки по перемещению
-//* ограничения, за которые нельзя вытащить mainPin
-const limits = {
-  top: map.offsetTop,
-  right: map.offsetWidth - mainPin.offsetWidth,
-  bottom: map.offsetHeight + map.offsetTop - mainPin.offsetHeight,
-  left: map.offsetLeft
 };
-
-//* вкл/выкл режим перетаскивания
-mainPin.onmousedown = function () {
-  mainPin.draggable = true;
-};
-document.onmouseup = function () {
-  mainPin.draggable = false;
-};
-document.onmousemove = function (e) {
-  if (mainPin.draggable) {
-    move(e);
-  }
-};
-
-//* вычисление координат
-function move(e) {
-  const newLocation = {
-    x: limits.left,
-    y: limits.top
-  };
-  if (e.pageX > limits.right) {
-    newLocation.x = limits.right;
-  } else if (e.pageX > limits.left) {
-    newLocation.x = e.pageX;
-  }
-  if (e.pageY > limits.bottom) {
-    newLocation.y = limits.bottom;
-  } else if (e.pageY > limits.top) {
-    newLocation.y = e.pageY;
-  }
-  relocate(newLocation);
-}
-
-//* размещение mainPin
-function relocate(newLocation) {
-  mainPin.style.left = newLocation.x + "px";
-  mainPin.style.top = newLocation.y + "px";
-}
+form.addEventListener("submit", submitHandler);
