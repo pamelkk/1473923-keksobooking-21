@@ -6,7 +6,6 @@
   const formInputs = form.querySelectorAll(".ad-form__element input");
   const formSelects = form.querySelectorAll(".ad-form__element select");
   const formTextAreas = form.querySelectorAll(".ad-form__element textarea");
-  const announcementItems = window.announcements.createAnnouncements(8);
   const mainPin = document.querySelector(".map__pin--main");
   const ENTER_KEYCODE = 13;
   const LEFT_CLICK = 1;
@@ -23,11 +22,8 @@
 
   window.activation = {
     makeActive: function () {
-      const pinElements = window.pin.createPins(announcementItems);
-
       map.classList.remove("map--faded");
       form.classList.remove("ad-form--disabled");
-      window.pin.renderPins(pinElements);
 
       window.form.makeEnableDisable(formInputs);
       window.form.makeEnableDisable(formSelects);

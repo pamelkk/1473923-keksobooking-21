@@ -45,6 +45,7 @@
     },
     // очистка поля с placeholder после успешной отправки формы
     makeInputPlaceholder: function (input) {
+      input.placeholder = "5000";
       input.value = input.placeholder;
     },
     // очистка полей select до selected после успешной отправки формы
