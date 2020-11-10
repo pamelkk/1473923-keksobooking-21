@@ -2,8 +2,9 @@
 
 (function () {
   const URL = "https://21.javascript.pages.academy/keksobooking/data";
+  const STATUS_OK = 200;
   const StatusCode = {
-    OK: 200
+    OK: STATUS_OK
   };
   const TIMEOUT_IN_MS = 10000;
 

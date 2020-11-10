@@ -52,7 +52,7 @@
     },
     errorHandler: function (errorMessage) {
       const error = document.createElement("div");
-      error.style = "z-index: 100; margin: 0 auto; text-align: center; background-color: red;";
+      error.style = "z-index: 100; margin: 0 auto; text-align: center; background-color: red; font-weight: bold;";
       error.style.position = "absolute";
       error.style.left = 0;
       error.style.right = 0;

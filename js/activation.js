@@ -9,44 +9,29 @@
   const mainPin = document.querySelector(".map__pin--main");
   const ENTER_KEYCODE = 13;
   const LEFT_CLICK = 1;
-  const inputTitle = form.querySelector("#title");
-  const inputDescription = form.querySelector("#description");
-  const inputType = form.querySelector("#type");
   const inputPrice = form.querySelector("#price");
-  const inputTimeIn = form.querySelector("#timein");
-  const inputTimeOut = form.querySelector("#timeout");
-  const inputRoomNumber = form.querySelector("#room_number");
-  const inputCapacity = form.querySelector("#capacity");
-  const inputFeatures = form.querySelectorAll(".ad-form__element--wide input");
   const buttonSubmit = form.querySelector(".ad-form__submit");
+  const fields = [formInputs, formSelects, formTextAreas];
 
   window.activation = {
+    getEnableDisableFields: function (elements) {
+      for (const element of elements) {
+        window.form.makeEnableDisable(element);
+      }
+    },
     makeActive: function () {
       map.classList.remove("map--faded");
       form.classList.remove("ad-form--disabled");
-
-      window.form.makeEnableDisable(formInputs);
-      window.form.makeEnableDisable(formSelects);
-      window.form.makeEnableDisable(formTextAreas);
       window.form.makeEnableDisableButton(buttonSubmit);
+      window.activation.getEnableDisableFields(fields);
     },
     makeInactive: function () {
       map.classList.add("map--faded");
       form.classList.add("ad-form--disabled");
-      window.form.makeCleanInput(inputTitle);
-      window.form.makeCleanInput(inputDescription);
-      window.form.makeInputSelected(inputType);
+      form.reset();
       window.form.makeInputPlaceholder(inputPrice);
-      window.form.makeInputSelected(inputTimeIn);
-      window.form.makeInputSelected(inputTimeOut);
-      window.form.makeInputSelected(inputRoomNumber);
-      window.form.makeInputSelected(inputCapacity);
-      window.form.makeCleanFeatures(inputFeatures);
 
-
-      window.form.makeEnableDisable(formInputs);
-      window.form.makeEnableDisable(formSelects);
-      window.form.makeEnableDisable(formTextAreas);
+      window.activation.getEnableDisableFields(fields);
     }
   };
 

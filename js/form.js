@@ -12,15 +12,10 @@
   const formSelects = form.querySelectorAll(".ad-form__element select");
   const formTextAreas = form.querySelectorAll(".ad-form__element textarea");
   const inputType = form.querySelector("#type");
-  const inputTitle = form.querySelector("#title");
-  const inputDescription = form.querySelector("#description");
   const inputPrice = form.querySelector("#price");
   const buttonSubmit = form.querySelector(".ad-form__submit");
   const inputTimeIn = form.querySelector("#timein");
   const inputTimeOut = form.querySelector("#timeout");
-  const inputRoomNumber = form.querySelector("#room_number");
-  const inputCapacity = form.querySelector("#capacity");
-  const inputFeatures = form.querySelectorAll(".ad-form__element--wide input");
 
   window.form = {
     // перевод полей в неактивное/активное состояние
@@ -33,28 +28,13 @@
     makeEnableDisableButton: function (element) {
       element.disabled = !element.disabled;
     },
-    // очистка полей после успешной отправки формы
-    makeCleanInput: function (input) {
-      input.value = "";
-    },
-    // очистка полей после успешной отправки формы
-    makeCleanFeatures: function (inputs) {
-      for (const input of inputs) {
-        input.checked = false;
-      }
-    },
     // очистка поля с placeholder после успешной отправки формы
     makeInputPlaceholder: function (input) {
       input.placeholder = "5000";
-      input.value = input.placeholder;
-    },
-    // очистка полей select до selected после успешной отправки формы
-    makeInputSelected: function (input) {
-      input.querySelector("option").value = input.querySelector("option").selected;
     },
     // установка значения поля ввода адреса
     getAddress: function () {
-      let addressInput = document.querySelector("#address");
+      const addressInput = document.querySelector("#address");
       let coordinateX = parseInt(mainPin.style.left, 10) + (PIN_WIDTH / 2);
       let coordinateY = parseInt(mainPin.style.top, 10) + PIN_HEIGHT;
 
@@ -130,14 +110,23 @@
   // очистка полей при клике на "очистить"
   reset.addEventListener("click", function (evt) {
     evt.preventDefault();
-    window.form.makeCleanInput(inputTitle);
-    window.form.makeCleanInput(inputDescription);
-    window.form.makeInputSelected(inputType);
+    form.reset();
     window.form.makeInputPlaceholder(inputPrice);
-    window.form.makeInputSelected(inputTimeIn);
-    window.form.makeInputSelected(inputTimeOut);
-    window.form.makeInputSelected(inputRoomNumber);
-    window.form.makeInputSelected(inputCapacity);
-    window.form.makeCleanFeatures(inputFeatures);
   });
 })();
+
+// отправка формы
+const form = document.querySelector(".ad-form");
+const submitHandler = function (evt) {
+  evt.preventDefault();
+  window.upload(new FormData(form), function () {
+    window.messages.successMessage();
+  });
+};
+const submitError = function (evt) {
+  evt.preventDefault();
+  window.upload(new FormData(form), function () {
+    window.messages.errorMessage();
+  });
+};
+window.upload("submit", submitHandler, submitError);
