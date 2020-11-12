@@ -79,3 +79,4 @@
   };
   window.load(window.pin.onSuccessLoad, window.pin.errorHandler);
 })();
+
