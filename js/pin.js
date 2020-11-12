@@ -7,13 +7,12 @@
   const PIN_OFFSET_Y = 87;
   const ENTER_KEYCODE = 13;
   const LEFT_CLICK = 1;
-  const MAX_SIMILAR_ANNOUNCEMENT_COUNT = 8;
   const mainPin = document.querySelector(".map__pin--main");
 
   window.pin = {
-    successHandler: function (announcements) {
+    renderPins: function (announcements) {
       const pinItems = [];
-      for (let i = 0; i < MAX_SIMILAR_ANNOUNCEMENT_COUNT; i++) {
+      for (let i = 0; i < announcements.length; i++) {
         const pinClone = pinTemplate.cloneNode(true);
         pinClone.querySelector(".map__pin").style.top = announcements[i].location.y - PIN_OFFSET_Y + "px";
         pinClone.querySelector(".map__pin").style.left = announcements[i].location.x - PIN_OFFSET_X + "px";
@@ -36,15 +35,20 @@
             window.card.createCard(announcements[i]);
           }
         });
-
-        // Рисую элементы меток
-        mainPin.addEventListener("mousedown", function (evt) {
-          if (evt.which === LEFT_CLICK) {
+        window.creating = {
+          createPins: function () {
             const fragment = document.createDocumentFragment();
             for (const pinItem of pinItems) {
               fragment.appendChild(pinItem);
               pinList.appendChild(fragment);
             }
+          }
+        };
+
+        // Рисую элементы меток
+        mainPin.addEventListener("mousedown", function (evt) {
+          if (evt.which === LEFT_CLICK) {
+            window.creating.createPins();
           }
         });
       }
@@ -59,7 +63,20 @@
       error.style.fontSize = "30px";
       error.textContent = errorMessage;
       document.body.insertAdjacentElement("afterbegin", error);
+    },
+    onSuccessLoad: function (announcements) {
+      window.announcements = announcements;
+      window.pin.renderPins(announcements);
+    },
+    removePin: function () {
+      const map = document.querySelector(".map");
+      const pins = map.querySelectorAll(".map__pin:not(.map__pin--main)");
+
+      pins.forEach(function (pin) {
+        pin.remove();
+      });
     }
   };
-  window.load(window.pin.successHandler);
+  window.load(window.pin.onSuccessLoad, window.pin.errorHandler);
 })();
+
