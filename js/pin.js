@@ -10,7 +10,7 @@
   const mainPin = document.querySelector(".map__pin--main");
 
   window.pin = {
-    renderPins: function (announcements) {
+    createPins: function (announcements) {
       const pinItems = [];
       for (let i = 0; i < announcements.length; i++) {
         const pinClone = pinTemplate.cloneNode(true);
@@ -35,8 +35,8 @@
             window.card.createCard(announcements[i]);
           }
         });
-        window.creating = {
-          createPins: function () {
+        window.rendering = {
+          renderPins: function () {
             const fragment = document.createDocumentFragment();
             for (const pinItem of pinItems) {
               fragment.appendChild(pinItem);
@@ -48,7 +48,7 @@
         // Рисую элементы меток
         mainPin.addEventListener("mousedown", function (evt) {
           if (evt.which === LEFT_CLICK) {
-            window.creating.createPins();
+            window.rendering.renderPins();
           }
         });
       }
@@ -66,7 +66,7 @@
     },
     onSuccessLoad: function (announcements) {
       window.announcements = announcements;
-      window.pin.renderPins(announcements);
+      window.pin.createPins(announcements);
     },
     removePin: function () {
       const map = document.querySelector(".map");
