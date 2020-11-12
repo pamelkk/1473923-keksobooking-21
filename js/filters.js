@@ -12,7 +12,7 @@ const MAX_ANNOUNCEMENTS = 5;
 
 window.load(window.pin.onSuccessLoad, window.pin.errorHandler);
 
-filters.addEventListener("change", function () {
+filters.addEventListener("change", window.debounce(function () {
   const card = document.querySelector(".map__card");
   if (card) {
     card.remove();
@@ -53,17 +53,20 @@ filters.addEventListener("change", function () {
           guestsRes = parseInt(houseGuestsInput.value, 10) === item.offer.guests;
         }
 
-        features.forEach(function (feature) {
-          if (item.offer.features.indexOf(feature.value) === -1) {
-            featuresRes = false;
-            return;
+        const getFeatures = function (elements) {
+          for (let i = 0; i < elements.length; i++) {
+            if (item.offer.features.indexOf(elements[i].value) === -1) {
+              featuresRes = false;
+              break;
+            }
           }
-        });
+        };
+        getFeatures(features);
 
         return typeRes && priceRes && roomsRes && guestsRes && featuresRes;
       }
   );
   window.pin.removePin();
-  window.pin.renderPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
-  window.creating.createPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
-});
+  const createdPins = window.pin.createPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
+  window.rendering.renderPins(createdPins);
+}));
