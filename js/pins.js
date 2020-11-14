@@ -6,7 +6,7 @@
   const PIN_OFFSET_X = 32;
   const PIN_OFFSET_Y = 87;
 
-  window.pin = {
+  window.pins = {
     createPins: function (announcements) {
       const pinItems = [];
       for (let i = 0; i < announcements.length; i++) {

@@ -10,8 +10,6 @@ const MIN_PRICE = `10000`;
 const MAX_PRICE = `50000`;
 const MAX_ANNOUNCEMENTS = 5;
 
-window.load.startLoading(window.load.successLoadHanlder, window.load.errorLoadHandler);
-
 filters.addEventListener(`change`, window.debounce(function () {
   const card = document.querySelector(`.map__card`);
   if (card) {
@@ -66,7 +64,7 @@ filters.addEventListener(`change`, window.debounce(function () {
         return typeRes && priceRes && roomsRes && guestsRes && featuresRes;
       }
   );
-  window.pin.removePin();
-  const createdPins = window.pin.createPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
-  window.pin.renderPins(createdPins);
+  window.pins.removePin();
+  const createdPins = window.pins.createPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
+  window.pins.renderPins(createdPins);
 }));

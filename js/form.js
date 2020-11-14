@@ -123,7 +123,7 @@
   reset.addEventListener(`click`, function (evt) {
     const card = document.querySelector(`.map__card`);
     evt.preventDefault();
-    window.pin.removePin();
+    window.pins.removePin();
     card.remove();
     window.form.getAddress();
   });

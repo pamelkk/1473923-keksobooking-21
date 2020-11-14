@@ -25,7 +25,7 @@
         }
       });
       window.activation.makeInactive();
-      window.pin.removePin();
+      window.pins.removePin();
     },
     errorMessage: function () {
       const errorTemplate = document.querySelector(`#error`).content;

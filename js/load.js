@@ -21,7 +21,7 @@
     },
     successLoadHanlder: function (announcements) {
       window.announcements = announcements;
-      window.pin.renderPins(window.pin.createPins(window.announcements));
+      window.pins.renderPins(window.pins.createPins(window.announcements));
     },
     startLoading: function (onSuccess, onError) {
       const xhr = new XMLHttpRequest();

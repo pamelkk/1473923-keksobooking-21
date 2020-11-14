@@ -26,6 +26,7 @@
       form.classList.remove(`ad-form--disabled`);
       window.form.makeEnableDisableButton(buttonSubmit);
       window.activation.getEnableDisableFields(fields);
+      window.load.startLoading(window.load.successLoadHanlder, window.load.errorLoadHandler);
     },
     makeInactive: function () {
       map.classList.add(`map--faded`);
