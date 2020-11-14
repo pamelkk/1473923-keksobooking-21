@@ -12,8 +12,10 @@ const MAX_ANNOUNCEMENTS = 5;
 
 filters.addEventListener(`change`, window.debounce(function () {
   const card = document.querySelector(`.map__card`);
+  const activePin = document.querySelector(`.map__pin--active`);
   if (card) {
     card.remove();
+    activePin.classList.remove(`map__pin--active`);
   }
   const announcements = window.announcements;
   const filteredData = announcements.filter(

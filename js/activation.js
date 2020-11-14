@@ -15,25 +15,30 @@
   const reset = form.querySelector(`.ad-form__reset`);
 
   window.activation = {
-    getEnableDisableFields: function (elements) {
+    getDisableFields: function (elements) {
       for (const element of elements) {
-        window.form.makeEnableDisable(element);
+        window.form.makeDisable(element);
+      }
+    },
+    getEnableFields: function (elements) {
+      for (const element of elements) {
+        window.form.makeEnable(element);
       }
     },
     makeActive: function () {
-      window.load.successLoadHanlder();
       map.classList.remove(`map--faded`);
       form.classList.remove(`ad-form--disabled`);
-      window.form.makeEnableDisableButton(buttonSubmit);
-      window.activation.getEnableDisableFields(fields);
+      window.form.makeEnableButton(buttonSubmit);
+      window.activation.getEnableFields(fields);
       window.load.startLoading(window.load.successLoadHanlder, window.load.errorLoadHandler);
     },
     makeInactive: function () {
       map.classList.add(`map--faded`);
       form.classList.add(`ad-form--disabled`);
       form.reset();
+      window.form.makeDisableButton(buttonSubmit);
       window.form.makeInputPlaceholder(inputPrice);
-      window.activation.getEnableDisableFields(fields);
+      window.activation.getDisableFields(fields);
     }
   };
 
@@ -43,10 +48,8 @@
   });
 
   // активация страницы
-  mainPin.addEventListener(`mousedown`, function (evt) {
-    if (evt.which === LEFT_CLICK) {
-      window.activation.makeActive();
-    }
+  mainPin.addEventListener(`mousedown`, function () {
+    window.activation.makeActive();
   });
 
   mainPin.addEventListener(`keydown`, function (evt) {

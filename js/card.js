@@ -4,7 +4,6 @@
   const cardList = document.querySelector(`.card-wrapper`);
   const cardTemplate = document.querySelector(`#card`).content;
   const ESC_KEYCODE = 27;
-  const activePin = document.querySelector(`.map__pin--active`);
 
   const appartmentType = {
     flat: `Квартира`,
@@ -42,13 +41,16 @@
 
       // закрытие карточки
       cardElement.querySelector(`.popup__close`).addEventListener(`click`, function () {
-        activePin.classList.remove(`map__pin--active`);
+        const activePin = document.querySelector(`.map__pin--active`);
         cardElement.remove();
+        activePin.classList.remove(`map__pin--active`);
       });
 
       document.addEventListener(`keydown`, function (evt) {
         if (evt.keyCode === ESC_KEYCODE) {
+          const activePin = document.querySelector(`.map__pin--active`);
           cardElement.remove();
+          activePin.classList.remove(`map__pin--active`);
         }
       });
       cardList.appendChild(cardElement);

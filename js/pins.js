@@ -19,8 +19,10 @@
 
         pinClone.addEventListener(`click`, function (evt) {
           const card = document.querySelector(`.map__card`);
+          const activePin = document.querySelector(`.map__pin--active`);
           if (card) {
             card.remove();
+            activePin.classList.remove(`map__pin--active`);
           }
           window.card.createCard(announcements[i], evt.currentTarget);
         });

@@ -5,7 +5,7 @@
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
   const form = document.querySelector(`.ad-form`);
-  const capacity = document.querySelector(`#capacity`);
+  const guests = document.querySelector(`#capacity`);
   const roomNumber = document.querySelector(`#room_number`);
   const formInputs = form.querySelectorAll(`.ad-form__element input`);
   const reset = form.querySelector(`.ad-form__reset`);
@@ -19,14 +19,23 @@
 
   window.form = {
     // перевод полей в неактивное/активное состояние
-    makeEnableDisable: function (elements) {
+    makeDisable: function (elements) {
       for (const element of elements) {
-        element.disabled = !element.disabled;
+        element.disabled = true;
       }
     },
     // перевод кнопки в неактивное/активное состояние
-    makeEnableDisableButton: function (element) {
-      element.disabled = !element.disabled;
+    makeDisableButton: function (element) {
+      element.disabled = true;
+    },
+    makeEnable: function (elements) {
+      for (const element of elements) {
+        element.disabled = false;
+      }
+    },
+    // перевод кнопки в активное состояние
+    makeEnableButton: function (element) {
+      element.disabled = false;
     },
     // перевод филтров в неактивное состояние
     makeCleanFilters: function (elements) {
@@ -67,22 +76,22 @@
   };
 
   // делаю поля недоступными для редактирования
-  window.form.makeEnableDisableButton(buttonSubmit);
-  window.form.makeEnableDisable(formInputs);
-  window.form.makeEnableDisable(formSelects);
-  window.form.makeEnableDisable(formTextAreas);
+  window.form.makeDisableButton(buttonSubmit);
+  window.form.makeDisable(formInputs);
+  window.form.makeDisable(formSelects);
+  window.form.makeDisable(formTextAreas);
 
   // подсчет комнат и гостей
 
   roomNumber.addEventListener(`change`, function (evt) {
-    for (let i = 0; i < capacity.options.length; i++) {
-      if (roomNumber.options[i].value === 100) {
-        capacity.options[i].value = 0;
+    for (let i = 0; i < guests.options.length; i++) {
+      if (roomNumber.value === `100`) {
+        guests.value = `0`;
       } else {
-        if (capacity.options[i].value <= evt.target.value) {
-          capacity.setCustomValidity(``);
+        if (guests.options[i].value <= evt.target.value) {
+          guests.options[i].disabled = false;
         } else {
-          capacity.setCustomValidity(`Количество гостей должно быть равно или меньше количества комнат`);
+          guests.options[i].disabled = true;
         }
       }
     }
