@@ -19,11 +19,17 @@
         }
       });
 
-      document.addEventListener(`keydown`, function (evt) {
-        if (evt.keyCode === ESC_KEYCODE) {
-          success.remove();
+      function onCloseButtonClick() {
+        success.remove();
+      }
+
+      function onEscButtonPress(e) {
+        if (e.keyCode === ESC_KEYCODE) {
+          onCloseButtonClick();
         }
-      });
+      }
+
+      document.addEventListener('keydown', onEscButtonPress);
       window.activation.makeInactive();
       window.pins.removePin();
     },
@@ -43,11 +49,16 @@
         error.remove();
       });
 
-      document.addEventListener(`keydown`, function (evt) {
-        if (evt.keyCode === ESC_KEYCODE) {
-          error.remove();
+      function onCloseButtonClick() {
+        error.remove();
+      }
+
+      function onEscButtonPress(e) {
+        if (e.keyCode === ESC_KEYCODE) {
+          onCloseButtonClick();
         }
-      });
+      }
+      document.addEventListener('keydown', onEscButtonPress);
     },
     submitHandler: function () {
       const houseFeaturesInput = document.querySelector(`#housing-features`);

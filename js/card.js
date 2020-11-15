@@ -13,6 +13,18 @@
   };
 
   window.card = {
+    onCloseButtonClick: function () {
+      const cardItem = document.querySelector('.map__card');
+      const pinElement = document.querySelector('.map__pin--active');
+      pinElement.classList.remove('map__pin--active');
+      cardItem.remove();
+      document.removeEventListener('keydown', window.card.onEscButtonPress);
+    },
+    onEscButtonPress: function (e) {
+      if (e.keyCode === ESC_KEYCODE) {
+        window.card.onCloseButtonClick();
+      }
+    },
     createCard: function (item, pin) {
       const cardElement = cardTemplate.querySelector(`.map__card`).cloneNode(true);
 
@@ -46,13 +58,7 @@
         activePin.classList.remove(`map__pin--active`);
       });
 
-      document.addEventListener(`keydown`, function (evt) {
-        if (evt.keyCode === ESC_KEYCODE) {
-          const activePin = document.querySelector(`.map__pin--active`);
-          cardElement.remove();
-          activePin.classList.remove(`map__pin--active`);
-        }
-      });
+      document.addEventListener('keydown', window.card.onEscButtonPress);
       cardList.appendChild(cardElement);
     }
   };
