@@ -5,6 +5,9 @@
   const LEFT_CLICK = 1;
   const filters = document.querySelectorAll(`.map__filters select`);
   const form = document.querySelector(`.ad-form`);
+  const mainPin = document.querySelector(`.map__pin--main`);
+  const START_COORDINATE_X = `570px`;
+  const START_COORDINATE_Y = `375px`;
 
   window.messages = {
     successMessage: function () {
@@ -66,6 +69,8 @@
       window.messages.successMessage();
       window.form.makeCleanFeaturesFilters(houseFeaturesChecked);
       window.form.makeCleanFilters(filters);
+      mainPin.style.top = START_COORDINATE_Y;
+      mainPin.style.left = START_COORDINATE_X;
       window.form.getAddress();
     },
     submitError: function () {

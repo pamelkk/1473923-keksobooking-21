@@ -13,6 +13,7 @@
   mainPin.addEventListener(`mousedown`, function (evt) {
     evt.preventDefault();
     mainPin.style.zIndex = 50;
+    window.form.getAddress();
 
     let startCoords = {
       x: evt.clientX,
@@ -21,6 +22,7 @@
 
     let onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
+      window.form.getAddress();
 
       let shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -51,6 +53,7 @@
     };
     let onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      window.form.getAddress();
 
       document.removeEventListener(`mousemove`, onMouseMove);
       document.removeEventListener(`mouseup`, onMouseUp);

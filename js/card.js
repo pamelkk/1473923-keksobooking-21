@@ -42,11 +42,11 @@
 
       const featureElements = cardElement.querySelectorAll(`.popup__feature`);
       for (const featureElement of featureElements) {
-        for (const feature of item.offer.features) {
-        // показываются только те, что есть в массиве
-          if (featureElement.className.includes(feature)) {
-            featureElement.classList.add(`visually-hidden`);
+        for (let i = 0; i < item.offer.features.length; i++) {
+          if (featureElement.className.includes(item.offer.features[i])) {
+            featureElement.classList.remove(`visually-hidden`);
           }
+          featureElement.classList.add(`visually-hidden`);
         }
       }
       pin.classList.add(`map__pin--active`);

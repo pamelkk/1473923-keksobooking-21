@@ -11,6 +11,7 @@
   const reset = form.querySelector(`.ad-form__reset`);
   const formSelects = form.querySelectorAll(`.ad-form__element select`);
   const formTextAreas = form.querySelectorAll(`.ad-form__element textarea`);
+  const filters = document.querySelectorAll(`.map__filters select`);
   const inputType = form.querySelector(`#type`);
   const inputPrice = form.querySelector(`#price`);
   const buttonSubmit = form.querySelector(`.ad-form__submit`);
@@ -80,22 +81,29 @@
   window.form.makeDisable(formInputs);
   window.form.makeDisable(formSelects);
   window.form.makeDisable(formTextAreas);
+  window.form.makeDisable(filters);
 
   // подсчет комнат и гостей
 
-  roomNumber.addEventListener(`change`, function (evt) {
+  const guestsNumbersCheck = function (evt) {
     for (let i = 0; i < guests.options.length; i++) {
       if (roomNumber.value === `100`) {
         guests.value = `0`;
       } else {
         if (guests.options[i].value <= evt.target.value) {
           guests.options[i].disabled = false;
-        } else {
+          roomNumber.setCustomValidity(``);
+        }
+        if (guests.options[i].value > evt.target.value && guests.options[i].value > roomNumber.value) {
+          roomNumber.setCustomValidity(`Количество гостей должно быть равно или меньше количества комнат`);
           guests.options[i].disabled = true;
         }
       }
     }
-  });
+  };
+  buttonSubmit.addEventListener(`click`, guestsNumbersCheck);
+  roomNumber.addEventListener(`change`, guestsNumbersCheck);
+  roomNumber.addEventListener(`click`, guestsNumbersCheck);
 
   // Время заезда/выезда
   inputTimeIn.addEventListener(`change`, function (e) {
@@ -134,6 +142,7 @@
     evt.preventDefault();
     window.pins.removePin();
     card.remove();
+    window.form.makeDisable(filters);
     window.form.getAddress();
   });
 })();

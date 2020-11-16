@@ -3,10 +3,12 @@
 (function () {
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const STATUS_OK = 200;
+  const filters = document.querySelectorAll(`.map__filters select`);
   const StatusCode = {
     OK: STATUS_OK
   };
   const TIMEOUT_IN_MS = 10000;
+  const MAX_ANNOUNCEMENTS = 5;
 
   window.load = {
     errorLoadHandler: function (errorMessage) {
@@ -21,7 +23,10 @@
     },
     successLoadHanlder: function (announcements) {
       window.announcements = announcements;
-      window.pins.renderPins(window.pins.createPins(window.announcements));
+      for (const filter of filters) {
+        filter.disabled = false;
+      }
+      window.pins.renderPins(window.pins.createPins(window.announcements.slice(0, MAX_ANNOUNCEMENTS)));
     },
     startLoading: function (onSuccess, onError) {
       const xhr = new XMLHttpRequest();
