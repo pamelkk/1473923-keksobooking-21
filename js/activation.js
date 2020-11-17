@@ -48,8 +48,10 @@
   });
 
   // активация страницы
-  mainPin.addEventListener(`mousedown`, function () {
-    window.activation.makeActive();
+  mainPin.addEventListener(`mousedown`, function (evt) {
+    if (evt.which === LEFT_CLICK) {
+      window.activation.makeActive();
+    }
   });
 
   mainPin.addEventListener(`keydown`, function (evt) {

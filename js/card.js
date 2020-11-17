@@ -42,10 +42,11 @@
 
       const featureElements = cardElement.querySelectorAll(`.popup__feature`);
       for (const featureElement of featureElements) {
-        for (let i = 0; i < item.offer.features.length; i++) {
-          if (featureElement.className.includes(item.offer.features[i])) {
-            featureElement.classList.remove(`visually-hidden`);
-          }
+        const newClassName = featureElement.className.replace('popup__feature popup__feature--', '');
+        const isMatchedWithFeatures = item.offer.features.some(function(feature) {
+          return feature === newClassName;
+        });
+        if (!isMatchedWithFeatures) {
           featureElement.classList.add(`visually-hidden`);
         }
       }
