@@ -1,14 +1,14 @@
 'use strict';
 
+const MIN_PRICE = `10000`;
+const MAX_PRICE = `50000`;
+const MAX_ANNOUNCEMENTS = 5;
 const filters = document.querySelector(`.map__filters`);
 const houseTypeInput = filters.querySelector(`#housing-type`);
 const housePriceInput = filters.querySelector(`#housing-price`);
 const houseRoomsInput = filters.querySelector(`#housing-rooms`);
 const houseGuestsInput = filters.querySelector(`#housing-guests`);
 const houseFeaturesInput = filters.querySelector(`#housing-features`);
-const MIN_PRICE = `10000`;
-const MAX_PRICE = `50000`;
-const MAX_ANNOUNCEMENTS = 5;
 
 filters.addEventListener(`change`, window.debounce(function () {
   const card = document.querySelector(`.map__card`);

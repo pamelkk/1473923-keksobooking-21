@@ -1,14 +1,14 @@
 'use strict';
 
 (function () {
+  const ENTER_KEYCODE = 13;
+  const LEFT_CLICK = 1;
   const map = document.querySelector(`.map`);
   const form = document.querySelector(`.ad-form`);
   const formInputs = form.querySelectorAll(`.ad-form__element input`);
   const formSelects = form.querySelectorAll(`.ad-form__element select`);
   const formTextAreas = form.querySelectorAll(`.ad-form__element textarea`);
   const mainPin = document.querySelector(`.map__pin--main`);
-  const ENTER_KEYCODE = 13;
-  const LEFT_CLICK = 1;
   const inputPrice = form.querySelector(`#price`);
   const buttonSubmit = form.querySelector(`.ad-form__submit`);
   const fields = [formInputs, formSelects, formTextAreas];

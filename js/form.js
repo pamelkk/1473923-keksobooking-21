@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-  const mainPin = document.querySelector(`.map__pin--main`);
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
+  const mainPin = document.querySelector(`.map__pin--main`);
   const form = document.querySelector(`.ad-form`);
   const guests = document.querySelector(`#capacity`);
   const roomNumber = document.querySelector(`#room_number`);
@@ -88,7 +88,10 @@
   const guestsNumbersCheck = function (evt) {
     for (let i = 0; i < guests.options.length; i++) {
       if (roomNumber.value === `100`) {
+        const notForGuests = guests.options[3];
         guests.value = `0`;
+        guests.options[i].disabled = true;
+        notForGuests.disabled = false;
       } else {
         if (guests.options[i].value <= evt.target.value) {
           guests.options[i].disabled = false;

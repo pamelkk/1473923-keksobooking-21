@@ -1,14 +1,14 @@
 'use strict';
 
 (function () {
-  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const TIMEOUT_IN_MS = 10000;
+  const MAX_ANNOUNCEMENTS = 5;
   const STATUS_OK = 200;
+  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const filters = document.querySelectorAll(`.map__filters select`);
   const StatusCode = {
     OK: STATUS_OK
   };
-  const TIMEOUT_IN_MS = 10000;
-  const MAX_ANNOUNCEMENTS = 5;
 
   window.load = {
     errorLoadHandler: function (errorMessage) {

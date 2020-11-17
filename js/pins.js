@@ -1,10 +1,10 @@
 'use strict';
 
 (function () {
-  const pinTemplate = document.querySelector(`#pin`).content;
-  const pinList = document.querySelector(`.map__pins`);
   const PIN_OFFSET_X = 32;
   const PIN_OFFSET_Y = 87;
+  const pinTemplate = document.querySelector(`#pin`).content;
+  const pinList = document.querySelector(`.map__pins`);
 
   window.pins = {
     createPins: function (announcements) {

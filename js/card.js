@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
+  const ESC_KEYCODE = 27;
   const cardList = document.querySelector(`.card-wrapper`);
   const cardTemplate = document.querySelector(`#card`).content;
-  const ESC_KEYCODE = 27;
 
   const appartmentType = {
     flat: `Квартира`,
@@ -43,7 +43,7 @@
       const featureElements = cardElement.querySelectorAll(`.popup__feature`);
       for (const featureElement of featureElements) {
         const newClassName = featureElement.className.replace('popup__feature popup__feature--', '');
-        const isMatchedWithFeatures = item.offer.features.some(function(feature) {
+        const isMatchedWithFeatures = item.offer.features.some(function (feature) {
           return feature === newClassName;
         });
         if (!isMatchedWithFeatures) {

@@ -1,13 +1,13 @@
 'use strict';
 
 (function () {
+  const START_COORDINATE_X = `570px`;
+  const START_COORDINATE_Y = `375px`;
   const ESC_KEYCODE = 27;
   const LEFT_CLICK = 1;
   const filters = document.querySelectorAll(`.map__filters select`);
   const form = document.querySelector(`.ad-form`);
   const mainPin = document.querySelector(`.map__pin--main`);
-  const START_COORDINATE_X = `570px`;
-  const START_COORDINATE_Y = `375px`;
 
   window.messages = {
     successMessage: function () {
