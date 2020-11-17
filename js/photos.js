@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
 (function () {
-  const IMG_CARD_WIDTH = 45 + "px";
-  const IMG_CARD_HEIGHT = 40 + "px";
+  const IMG_CARD_WIDTH = 45 + `px`;
+  const IMG_CARD_HEIGHT = 40 + `px`;
 
   window.photos = {
     // Выбор рандомного фитчера и фото
@@ -20,12 +20,12 @@
     getPhotoItems: function (items) {
       const photoItems = [];
       for (const item of items) {
-        const photoItem = document.createElement("img");
-        photoItem.classList.add("popup__photo");
+        const photoItem = document.createElement(`img`);
+        photoItem.classList.add(`popup__photo`);
         photoItem.src = item;
         photoItem.style.width = IMG_CARD_WIDTH;
         photoItem.style.height = IMG_CARD_HEIGHT;
-        photoItem.alt = "Фотография жилья";
+        photoItem.alt = `Фотография жилья`;
         photoItems.push(photoItem);
       }
       return photoItems;
