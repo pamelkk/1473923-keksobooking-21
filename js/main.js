@@ -67,4 +67,3 @@
     document.addEventListener(`mouseup`, onMouseUp);
   });
 })();
-
