@@ -12,6 +12,8 @@
   const formSelectsElements = formElement.querySelectorAll(`.ad-form__element select`);
   const formTextAreasElements = formElement.querySelectorAll(`.ad-form__element textarea`);
   const filtersElements = document.querySelectorAll(`.map__filters select`);
+  const houseFeaturesInputElement = document.querySelector(`#housing-features`);
+  const filterFeaturesElements = houseFeaturesInputElement.querySelectorAll(`input`);
   const inputTypeElement = formElement.querySelector(`#type`);
   const inputPriceElement = formElement.querySelector(`#price`);
   const buttonSubmitElement = formElement.querySelector(`.ad-form__submit`);
@@ -82,6 +84,7 @@
   window.form.makeDisable(formSelectsElements);
   window.form.makeDisable(formTextAreasElements);
   window.form.makeDisable(filtersElements);
+  window.form.makeDisable(filterFeaturesElements);
 
   // подсчет комнат и гостей
 
@@ -93,13 +96,29 @@
         guestsElements.options[i].disabled = true;
         notForGuestsElement.disabled = false;
       } else {
+        const oneGuestElement = guestsElements.options[2];
+        const twoGuestsElement = guestsElements.options[1];
+        const threeGuestsElement = guestsElements.options[0];
         if (guestsElements.value <= evt.target.value) {
-          guestsElements.options[i].disabled = false;
           roomNumberElement.setCustomValidity(``);
         }
         if (guestsElements.value > evt.target.value && guestsElements.value > roomNumberElement.value) {
-          guestsElements.options[i].disabled = true;
           roomNumberElement.setCustomValidity(`Количество гостей должно быть равно или меньше количества комнат`);
+        }
+        if (roomNumberElement.value === `1`) {
+          guestsElements.options[i].disabled = true;
+          oneGuestElement.disabled = false;
+        }
+        if (roomNumberElement.value === `2`) {
+          guestsElements.options[i].disabled = true;
+          oneGuestElement.disabled = false;
+          twoGuestsElement.disabled = false;
+        }
+        if (roomNumberElement.value === `3`) {
+          guestsElements.options[i].disabled = true;
+          threeGuestsElement.disabled = false;
+          oneGuestElement.disabled = false;
+          twoGuestsElement.disabled = false;
         }
       }
     }
@@ -107,6 +126,8 @@
   buttonSubmitElement.addEventListener(`click`, onInputNumbersCheck);
   roomNumberElement.addEventListener(`change`, onInputNumbersCheck);
   roomNumberElement.addEventListener(`click`, onInputNumbersCheck);
+  guestsElements.addEventListener(`change`, onInputNumbersCheck);
+  guestsElements.addEventListener(`click`, onInputNumbersCheck);
 
   // Время заезда/выезда
   inputTimeInElement.addEventListener(`change`, function (e) {
@@ -142,9 +163,13 @@
   // очистка полей при клике на очистить
   resetElement.addEventListener(`click`, function (evt) {
     const cardElement = document.querySelector(`.map__card`);
+    const houseFeaturesCheckedElement = houseFeaturesInputElement.querySelectorAll(`input:checked`);
+    if (cardElement) {
+      cardElement.remove();
+    }
     evt.preventDefault();
     window.pins.removePin();
-    cardElement.remove();
+    window.form.makeCleanFeaturesFilters(houseFeaturesCheckedElement);
     window.form.makeDisable(filtersElements);
     window.form.getAddress();
   });

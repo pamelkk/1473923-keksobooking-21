@@ -14,11 +14,11 @@
 
   window.card = {
     onCloseButtonClick: function () {
-      const cardItemElement = document.querySelector('.map__card');
-      const pinElement = document.querySelector('.map__pin--active');
-      pinElement.classList.remove('map__pin--active');
+      const cardItemElement = document.querySelector(`.map__card`);
+      const pinElement = document.querySelector(`.map__pin--active`);
+      pinElement.classList.remove(`map__pin--active`);
       cardItemElement.remove();
-      document.removeEventListener('keydown', window.card.onEscButtonPress);
+      document.removeEventListener(`keydown`, window.card.onEscButtonPress);
     },
     onEscButtonPress: function (e) {
       if (e.keyCode === ESC_KEYCODE) {
@@ -42,7 +42,7 @@
 
       const featureElements = cardElement.querySelectorAll(`.popup__feature`);
       for (const featureElement of featureElements) {
-        const newClassName = featureElement.className.replace('popup__feature popup__feature--', '');
+        const newClassName = featureElement.className.replace(`popup__feature popup__feature--`, ``);
         const isMatchedWithFeatures = item.offer.features.some(function (feature) {
           return feature === newClassName;
         });
@@ -59,7 +59,7 @@
         activePinElement.classList.remove(`map__pin--active`);
       });
 
-      document.addEventListener('keydown', window.card.onEscButtonPress);
+      document.addEventListener(`keydown`, window.card.onEscButtonPress);
       cardListElement.appendChild(cardElement);
     }
   };

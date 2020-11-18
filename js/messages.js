@@ -32,7 +32,7 @@
         }
       }
 
-      document.addEventListener('keydown', OnCloseButtonPress);
+      document.addEventListener(`keydown`, OnCloseButtonPress);
       window.activation.makeInactive();
       window.pins.removePin();
     },
@@ -61,7 +61,7 @@
           onCloseButtonClick();
         }
       }
-      document.addEventListener('keydown', OnCloseButtonPress);
+      document.addEventListener(`keydown`, OnCloseButtonPress);
     },
     onSubmitSuccess: function () {
       const houseFeaturesInputElement = document.querySelector(`#housing-features`);
