@@ -16,8 +16,12 @@
     onCloseButtonClick: function () {
       const cardItemElement = document.querySelector(`.map__card`);
       const pinElement = document.querySelector(`.map__pin--active`);
-      pinElement.classList.remove(`map__pin--active`);
-      cardItemElement.remove();
+      if (pinElement.classList.contains(`map__pin--active`)) {
+        pinElement.classList.remove(`map__pin--active`);
+      }
+      if (cardItemElement) {
+        cardItemElement.remove();
+      }
       document.removeEventListener(`keydown`, window.card.onEscButtonPress);
     },
     onEscButtonPress: function (e) {
