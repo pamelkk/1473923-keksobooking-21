@@ -9,8 +9,8 @@
     },
     // Рандомное между макс и мин
     randomInteger: function (min, max) {
-      const rand = min + Math.random() * (max + 1 - min);
-      return Math.floor(rand);
+      const randElement = min + Math.random() * (max + 1 - min);
+      return Math.floor(randElement);
     }
   };
 })();

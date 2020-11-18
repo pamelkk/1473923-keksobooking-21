@@ -3,20 +3,22 @@
 (function () {
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
-  const mainPin = document.querySelector(`.map__pin--main`);
-  const form = document.querySelector(`.ad-form`);
-  const guests = document.querySelector(`#capacity`);
-  const roomNumber = document.querySelector(`#room_number`);
-  const formInputs = form.querySelectorAll(`.ad-form__element input`);
-  const reset = form.querySelector(`.ad-form__reset`);
-  const formSelects = form.querySelectorAll(`.ad-form__element select`);
-  const formTextAreas = form.querySelectorAll(`.ad-form__element textarea`);
-  const filters = document.querySelectorAll(`.map__filters select`);
-  const inputType = form.querySelector(`#type`);
-  const inputPrice = form.querySelector(`#price`);
-  const buttonSubmit = form.querySelector(`.ad-form__submit`);
-  const inputTimeIn = form.querySelector(`#timein`);
-  const inputTimeOut = form.querySelector(`#timeout`);
+  const mainPinElement = document.querySelector(`.map__pin--main`);
+  const formElement = document.querySelector(`.ad-form`);
+  const guestsElements = document.querySelector(`#capacity`);
+  const roomNumberElement = document.querySelector(`#room_number`);
+  const formInputsElements = formElement.querySelectorAll(`.ad-form__element input`);
+  const resetElement = formElement.querySelector(`.ad-form__reset`);
+  const formSelectsElements = formElement.querySelectorAll(`.ad-form__element select`);
+  const formTextAreasElements = formElement.querySelectorAll(`.ad-form__element textarea`);
+  const filtersElements = document.querySelectorAll(`.map__filters select`);
+  const houseFeaturesInputElement = document.querySelector(`#housing-features`);
+  const filterFeaturesElements = houseFeaturesInputElement.querySelectorAll(`input`);
+  const inputTypeElement = formElement.querySelector(`#type`);
+  const inputPriceElement = formElement.querySelector(`#price`);
+  const buttonSubmitElement = formElement.querySelector(`.ad-form__submit`);
+  const inputTimeInElement = formElement.querySelector(`#timein`);
+  const inputTimeOutElement = formElement.querySelector(`#timeout`);
 
   window.form = {
     // перевод полей в неактивное/активное состояние
@@ -56,9 +58,9 @@
     },
     // установка значения поля ввода адреса
     getAddress: function () {
-      const addressInput = document.querySelector(`#address`);
-      let coordinateX = parseInt(mainPin.style.left, 10) + (PIN_WIDTH / 2);
-      let coordinateY = parseInt(mainPin.style.top, 10) + PIN_HEIGHT;
+      const addressInputElement = document.querySelector(`#address`);
+      let coordinateX = parseInt(mainPinElement.style.left, 10) + (PIN_WIDTH / 2);
+      let coordinateY = parseInt(mainPinElement.style.top, 10) + PIN_HEIGHT;
 
       if (coordinateX > 1200) {
         coordinateX = 1200;
@@ -72,80 +74,103 @@
       if (coordinateY < 130) {
         coordinateY = 130;
       }
-      addressInput.value = coordinateX + `,` + coordinateY;
+      addressInputElement.value = coordinateX + `,` + coordinateY;
     }
   };
 
   // делаю поля недоступными для редактирования
-  window.form.makeDisableButton(buttonSubmit);
-  window.form.makeDisable(formInputs);
-  window.form.makeDisable(formSelects);
-  window.form.makeDisable(formTextAreas);
-  window.form.makeDisable(filters);
+  window.form.makeDisableButton(buttonSubmitElement);
+  window.form.makeDisable(formInputsElements);
+  window.form.makeDisable(formSelectsElements);
+  window.form.makeDisable(formTextAreasElements);
+  window.form.makeDisable(filtersElements);
+  window.form.makeDisable(filterFeaturesElements);
 
   // подсчет комнат и гостей
 
-  const guestsNumbersCheck = function (evt) {
-    for (let i = 0; i < guests.options.length; i++) {
-      if (roomNumber.value === `100`) {
-        const notForGuests = guests.options[3];
-        guests.value = `0`;
-        guests.options[i].disabled = true;
-        notForGuests.disabled = false;
+  const onInputNumbersCheck = function (evt) {
+    for (let i = 0; i < guestsElements.options.length; i++) {
+      if (roomNumberElement.value === `100`) {
+        const notForGuestsElement = guestsElements.options[3];
+        guestsElements.value = `0`;
+        guestsElements.options[i].disabled = true;
+        notForGuestsElement.disabled = false;
       } else {
-        if (guests.options[i].value <= evt.target.value) {
-          guests.options[i].disabled = false;
-          roomNumber.setCustomValidity(``);
+        const oneGuestElement = guestsElements.options[2];
+        const twoGuestsElement = guestsElements.options[1];
+        const threeGuestsElement = guestsElements.options[0];
+        if (guestsElements.value <= evt.target.value) {
+          roomNumberElement.setCustomValidity(``);
         }
-        if (guests.options[i].value > evt.target.value && guests.options[i].value > roomNumber.value) {
-          roomNumber.setCustomValidity(`Количество гостей должно быть равно или меньше количества комнат`);
-          guests.options[i].disabled = true;
+        if (guestsElements.value > evt.target.value && guestsElements.value > roomNumberElement.value) {
+          roomNumberElement.setCustomValidity(`Количество гостей должно быть равно или меньше количества комнат`);
+        }
+        if (roomNumberElement.value === `1`) {
+          guestsElements.options[i].disabled = true;
+          oneGuestElement.disabled = false;
+        }
+        if (roomNumberElement.value === `2`) {
+          guestsElements.options[i].disabled = true;
+          oneGuestElement.disabled = false;
+          twoGuestsElement.disabled = false;
+        }
+        if (roomNumberElement.value === `3`) {
+          guestsElements.options[i].disabled = true;
+          threeGuestsElement.disabled = false;
+          oneGuestElement.disabled = false;
+          twoGuestsElement.disabled = false;
         }
       }
     }
   };
-  buttonSubmit.addEventListener(`click`, guestsNumbersCheck);
-  roomNumber.addEventListener(`change`, guestsNumbersCheck);
-  roomNumber.addEventListener(`click`, guestsNumbersCheck);
+  buttonSubmitElement.addEventListener(`click`, onInputNumbersCheck);
+  roomNumberElement.addEventListener(`change`, onInputNumbersCheck);
+  roomNumberElement.addEventListener(`click`, onInputNumbersCheck);
+  guestsElements.addEventListener(`change`, onInputNumbersCheck);
+  guestsElements.addEventListener(`click`, onInputNumbersCheck);
 
   // Время заезда/выезда
-  inputTimeIn.addEventListener(`change`, function (e) {
-    const timein = document.querySelector(`#timein`);
-    const timeout = document.querySelector(`#timeout`);
-    timein.value = e.target.value;
-    timeout.value = e.target.value;
+  inputTimeInElement.addEventListener(`change`, function (e) {
+    const timeinElement = document.querySelector(`#timein`);
+    const timeoutElement = document.querySelector(`#timeout`);
+    timeinElement.value = e.target.value;
+    timeoutElement.value = e.target.value;
   });
 
-  inputTimeOut.addEventListener(`change`, function (e) {
-    const timein = document.querySelector(`#timein`);
-    const timeout = document.querySelector(`#timeout`);
-    timein.value = e.target.value;
-    timeout.value = e.target.value;
+  inputTimeOutElement.addEventListener(`change`, function (e) {
+    const timeinElement = document.querySelector(`#timein`);
+    const timeoutElement = document.querySelector(`#timeout`);
+    timeinElement.value = e.target.value;
+    timeoutElement.value = e.target.value;
   });
 
   // соответствие цена/тип жилья
 
-  inputType.addEventListener(`change`, function (e) {
+  inputTypeElement.addEventListener(`change`, function (e) {
     const appartmentTypePrice = {
       flat: `1000`,
       bungalow: `0`,
       house: `5000`,
       palace: `10000`
     };
-    inputPrice.min = appartmentTypePrice[e.target.value];
-    inputPrice.placeholder = appartmentTypePrice[e.target.value];
+    inputPriceElement.min = appartmentTypePrice[e.target.value];
+    inputPriceElement.placeholder = appartmentTypePrice[e.target.value];
   });
 
   // установка значения поля ввода адреса
   window.form.getAddress();
 
   // очистка полей при клике на очистить
-  reset.addEventListener(`click`, function (evt) {
-    const card = document.querySelector(`.map__card`);
+  resetElement.addEventListener(`click`, function (evt) {
+    const cardElement = document.querySelector(`.map__card`);
+    const houseFeaturesCheckedElement = houseFeaturesInputElement.querySelectorAll(`input:checked`);
+    if (cardElement) {
+      cardElement.remove();
+    }
     evt.preventDefault();
     window.pins.removePin();
-    card.remove();
-    window.form.makeDisable(filters);
+    window.form.makeCleanFeaturesFilters(houseFeaturesCheckedElement);
+    window.form.makeDisable(filtersElements);
     window.form.getAddress();
   });
 })();

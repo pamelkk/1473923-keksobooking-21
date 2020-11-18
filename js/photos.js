@@ -7,12 +7,12 @@
   window.photos = {
     // Выбор рандомного фитчера и фото
     getRandomPhotoFeatures: function (items) {
-      let i = 0;
-      let begin = window.counting.randomInteger(i, items.length);
-      let end = window.counting.randomInteger(i, items.length);
+      let element = 0;
+      let begin = window.counting.randomInteger(element, items.length);
+      let end = window.counting.randomInteger(element, items.length);
       while (begin >= end) {
-        begin = window.counting.randomInteger(i, items.length);
-        end = window.counting.randomInteger(i, items.length);
+        begin = window.counting.randomInteger(element, items.length);
+        end = window.counting.randomInteger(element, items.length);
       }
       return items.slice(begin, end);
     },
@@ -20,22 +20,22 @@
     getPhotoItems: function (items) {
       const photoItems = [];
       for (const item of items) {
-        const photoItem = document.createElement(`img`);
-        photoItem.classList.add(`popup__photo`);
-        photoItem.src = item;
-        photoItem.style.width = IMG_CARD_WIDTH;
-        photoItem.style.height = IMG_CARD_HEIGHT;
-        photoItem.alt = `Фотография жилья`;
-        photoItems.push(photoItem);
+        const photoItemElement = document.createElement(`img`);
+        photoItemElement.classList.add(`popup__photo`);
+        photoItemElement.src = item;
+        photoItemElement.style.width = IMG_CARD_WIDTH;
+        photoItemElement.style.height = IMG_CARD_HEIGHT;
+        photoItemElement.alt = `Фотография жилья`;
+        photoItems.push(photoItemElement);
       }
       return photoItems;
     },
     renderPhotos: function (elements) {
-      const fragmentPhoto = document.createDocumentFragment();
+      const fragmentPhotoElement = document.createDocumentFragment();
       for (const element of elements) {
-        fragmentPhoto.appendChild(element);
+        fragmentPhotoElement.appendChild(element);
       }
-      return fragmentPhoto;
+      return fragmentPhotoElement;
     }
   };
 })();

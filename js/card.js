@@ -2,8 +2,8 @@
 
 (function () {
   const ESC_KEYCODE = 27;
-  const cardList = document.querySelector(`.card-wrapper`);
-  const cardTemplate = document.querySelector(`#card`).content;
+  const cardListElement = document.querySelector(`.card-wrapper`);
+  const cardTemplateElement = document.querySelector(`#card`).content;
 
   const appartmentType = {
     flat: `Квартира`,
@@ -14,11 +14,11 @@
 
   window.card = {
     onCloseButtonClick: function () {
-      const cardItem = document.querySelector('.map__card');
-      const pinElement = document.querySelector('.map__pin--active');
-      pinElement.classList.remove('map__pin--active');
-      cardItem.remove();
-      document.removeEventListener('keydown', window.card.onEscButtonPress);
+      const cardItemElement = document.querySelector(`.map__card`);
+      const pinElement = document.querySelector(`.map__pin--active`);
+      pinElement.classList.remove(`map__pin--active`);
+      cardItemElement.remove();
+      document.removeEventListener(`keydown`, window.card.onEscButtonPress);
     },
     onEscButtonPress: function (e) {
       if (e.keyCode === ESC_KEYCODE) {
@@ -26,7 +26,7 @@
       }
     },
     createCard: function (item, pin) {
-      const cardElement = cardTemplate.querySelector(`.map__card`).cloneNode(true);
+      const cardElement = cardTemplateElement.querySelector(`.map__card`).cloneNode(true);
 
       cardElement.querySelector(`.popup__title`).textContent = item.offer.title;
       cardElement.querySelector(`.popup__text--address`).textContent = item.offer.address;
@@ -37,12 +37,12 @@
       cardElement.querySelector(`.popup__description`).textContent = item.offer.description;
       cardElement.querySelector(`.popup__avatar`).src = item.author.avatar;
 
-      const cardPhotos = window.photos.renderPhotos(window.photos.getPhotoItems(item.offer.photos));
-      cardElement.querySelector(`.popup__photos`).appendChild(cardPhotos);
+      const cardPhotosElements = window.photos.renderPhotos(window.photos.getPhotoItems(item.offer.photos));
+      cardElement.querySelector(`.popup__photos`).appendChild(cardPhotosElements);
 
       const featureElements = cardElement.querySelectorAll(`.popup__feature`);
       for (const featureElement of featureElements) {
-        const newClassName = featureElement.className.replace('popup__feature popup__feature--', '');
+        const newClassName = featureElement.className.replace(`popup__feature popup__feature--`, ``);
         const isMatchedWithFeatures = item.offer.features.some(function (feature) {
           return feature === newClassName;
         });
@@ -54,13 +54,13 @@
 
       // закрытие карточки
       cardElement.querySelector(`.popup__close`).addEventListener(`click`, function () {
-        const activePin = document.querySelector(`.map__pin--active`);
+        const activePinElement = document.querySelector(`.map__pin--active`);
         cardElement.remove();
-        activePin.classList.remove(`map__pin--active`);
+        activePinElement.classList.remove(`map__pin--active`);
       });
 
-      document.addEventListener('keydown', window.card.onEscButtonPress);
-      cardList.appendChild(cardElement);
+      document.addEventListener(`keydown`, window.card.onEscButtonPress);
+      cardListElement.appendChild(cardElement);
     }
   };
 })();

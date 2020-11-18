@@ -5,13 +5,13 @@
   const MAX_ANNOUNCEMENTS = 5;
   const STATUS_OK = 200;
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
-  const filters = document.querySelectorAll(`.map__filters select`);
+  const filtersElements = document.querySelectorAll(`.map__filters select`);
   const StatusCode = {
     OK: STATUS_OK
   };
 
   window.load = {
-    errorLoadHandler: function (errorMessage) {
+    onErrorNotLoad: function (errorMessage) {
       const error = document.createElement(`div`);
       error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red; font-weight: bold;`;
       error.style.position = `absolute`;
@@ -21,9 +21,9 @@
       error.textContent = errorMessage;
       document.body.insertAdjacentElement(`afterbegin`, error);
     },
-    successLoadHanlder: function (announcements) {
+    onSuccessLoad: function (announcements) {
       window.announcements = announcements;
-      for (const filter of filters) {
+      for (const filter of filtersElements) {
         filter.disabled = false;
       }
       window.pins.renderPins(window.pins.createPins(window.announcements.slice(0, MAX_ANNOUNCEMENTS)));

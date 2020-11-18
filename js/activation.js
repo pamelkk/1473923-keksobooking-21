@@ -3,16 +3,16 @@
 (function () {
   const ENTER_KEYCODE = 13;
   const LEFT_CLICK = 1;
-  const map = document.querySelector(`.map`);
-  const form = document.querySelector(`.ad-form`);
-  const formInputs = form.querySelectorAll(`.ad-form__element input`);
-  const formSelects = form.querySelectorAll(`.ad-form__element select`);
-  const formTextAreas = form.querySelectorAll(`.ad-form__element textarea`);
-  const mainPin = document.querySelector(`.map__pin--main`);
-  const inputPrice = form.querySelector(`#price`);
-  const buttonSubmit = form.querySelector(`.ad-form__submit`);
-  const fields = [formInputs, formSelects, formTextAreas];
-  const reset = form.querySelector(`.ad-form__reset`);
+  const mapElement = document.querySelector(`.map`);
+  const formElement = document.querySelector(`.ad-form`);
+  const formInputsElements = formElement.querySelectorAll(`.ad-form__element input`);
+  const formSelectsElements = formElement.querySelectorAll(`.ad-form__element select`);
+  const formTextAreasElements = formElement.querySelectorAll(`.ad-form__element textarea`);
+  const mainPinElement = document.querySelector(`.map__pin--main`);
+  const inputPriceElement = formElement.querySelector(`#price`);
+  const buttonSubmitElement = formElement.querySelector(`.ad-form__submit`);
+  const fields = [formInputsElements, formSelectsElements, formTextAreasElements];
+  const resetElement = formElement.querySelector(`.ad-form__reset`);
 
   window.activation = {
     getDisableFields: function (elements) {
@@ -26,41 +26,41 @@
       }
     },
     makeActive: function () {
-      map.classList.remove(`map--faded`);
-      form.classList.remove(`ad-form--disabled`);
-      window.form.makeEnableButton(buttonSubmit);
+      mapElement.classList.remove(`map--faded`);
+      formElement.classList.remove(`ad-form--disabled`);
+      window.form.makeEnableButton(buttonSubmitElement);
       window.activation.getEnableFields(fields);
-      window.load.startLoading(window.load.successLoadHanlder, window.load.errorLoadHandler);
+      window.load.startLoading(window.load.onSuccessLoad, window.load.onErrorNotLoad);
     },
     makeInactive: function () {
-      map.classList.add(`map--faded`);
-      form.classList.add(`ad-form--disabled`);
-      form.reset();
-      window.form.makeDisableButton(buttonSubmit);
-      window.form.makeInputPlaceholder(inputPrice);
+      mapElement.classList.add(`map--faded`);
+      formElement.classList.add(`ad-form--disabled`);
+      formElement.reset();
+      window.form.makeDisableButton(buttonSubmitElement);
+      window.form.makeInputPlaceholder(inputPriceElement);
       window.activation.getDisableFields(fields);
     }
   };
 
   // очистка полей при клике на очистить
-  reset.addEventListener(`click`, function () {
+  resetElement.addEventListener(`click`, function () {
     window.activation.makeInactive();
   });
 
   // активация страницы
-  mainPin.addEventListener(`mousedown`, function (evt) {
+  mainPinElement.addEventListener(`mousedown`, function (evt) {
     if (evt.which === LEFT_CLICK) {
       window.activation.makeActive();
     }
   });
 
-  mainPin.addEventListener(`keydown`, function (evt) {
+  mainPinElement.addEventListener(`keydown`, function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       window.activation.makeActive();
     }
   });
 
-  mainPin.addEventListener(`mousemove`, function (evt) {
+  mainPinElement.addEventListener(`mousemove`, function (evt) {
     if (evt.which === LEFT_CLICK) {
       window.form.getAddress();
     }

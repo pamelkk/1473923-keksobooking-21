@@ -3,19 +3,19 @@
 const MIN_PRICE = `10000`;
 const MAX_PRICE = `50000`;
 const MAX_ANNOUNCEMENTS = 5;
-const filters = document.querySelector(`.map__filters`);
-const houseTypeInput = filters.querySelector(`#housing-type`);
-const housePriceInput = filters.querySelector(`#housing-price`);
-const houseRoomsInput = filters.querySelector(`#housing-rooms`);
-const houseGuestsInput = filters.querySelector(`#housing-guests`);
-const houseFeaturesInput = filters.querySelector(`#housing-features`);
+const filtersElements = document.querySelector(`.map__filters`);
+const houseTypeInputElement = filtersElements.querySelector(`#housing-type`);
+const housePriceInputElement = filtersElements.querySelector(`#housing-price`);
+const houseRoomsInputElement = filtersElements.querySelector(`#housing-rooms`);
+const houseGuestsInputElement = filtersElements.querySelector(`#housing-guests`);
+const houseFeaturesInputElement = filtersElements.querySelector(`#housing-features`);
 
-filters.addEventListener(`change`, window.debounce(function () {
-  const card = document.querySelector(`.map__card`);
-  const activePin = document.querySelector(`.map__pin--active`);
-  if (card) {
-    card.remove();
-    activePin.classList.remove(`map__pin--active`);
+filtersElements.addEventListener(`change`, window.debounce(function () {
+  const cardElement = document.querySelector(`.map__card`);
+  const activePinElement = document.querySelector(`.map__pin--active`);
+  if (cardElement) {
+    cardElement.remove();
+    activePinElement.classList.remove(`map__pin--active`);
   }
   const announcements = window.announcements;
   const filteredData = announcements.filter(
@@ -25,14 +25,14 @@ filters.addEventListener(`change`, window.debounce(function () {
         let roomsRes = true;
         let guestsRes = true;
         let featuresRes = true;
-        let features = houseFeaturesInput.querySelectorAll(`input:checked`);
+        let features = houseFeaturesInputElement.querySelectorAll(`input:checked`);
 
-        if (houseTypeInput.value !== `any`) {
-          typeRes = houseTypeInput.value === item.offer.type;
+        if (houseTypeInputElement.value !== `any`) {
+          typeRes = houseTypeInputElement.value === item.offer.type;
         }
 
-        if (housePriceInput.value !== `any`) {
-          switch (housePriceInput.value) {
+        if (housePriceInputElement.value !== `any`) {
+          switch (housePriceInputElement.value) {
             case `low`:
               priceRes = item.offer.price < MIN_PRICE;
               break;
@@ -45,12 +45,12 @@ filters.addEventListener(`change`, window.debounce(function () {
           }
         }
 
-        if (houseRoomsInput.value !== `any`) {
-          roomsRes = parseInt(houseRoomsInput.value, 10) === item.offer.rooms;
+        if (houseRoomsInputElement.value !== `any`) {
+          roomsRes = parseInt(houseRoomsInputElement.value, 10) === item.offer.rooms;
         }
 
-        if (houseGuestsInput.value !== `any`) {
-          guestsRes = parseInt(houseGuestsInput.value, 10) === item.offer.guests;
+        if (houseGuestsInputElement.value !== `any`) {
+          guestsRes = parseInt(houseGuestsInputElement.value, 10) === item.offer.guests;
         }
 
         const getFeatures = function (elements) {
@@ -67,6 +67,6 @@ filters.addEventListener(`change`, window.debounce(function () {
       }
   );
   window.pins.removePin();
-  const createdPins = window.pins.createPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
-  window.pins.renderPins(createdPins);
+  const createdPinsElements = window.pins.createPins(filteredData.slice(0, MAX_ANNOUNCEMENTS));
+  window.pins.renderPins(createdPinsElements);
 }));
