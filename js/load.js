@@ -6,11 +6,18 @@
   const STATUS_OK = 200;
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const filtersElements = document.querySelectorAll(`.map__filters select`);
+  const houseFeaturesInputElement = document.querySelector(`#housing-features`);
+  const filterFeaturesElements = houseFeaturesInputElement.querySelectorAll(`input`);
   const StatusCode = {
     OK: STATUS_OK
   };
 
   window.load = {
+    uncheckFilters: function (items) {
+      for (const item of items) {
+        item.disabled = false;
+      }
+    },
     onErrorNotLoad: function (errorMessage) {
       const error = document.createElement(`div`);
       error.style = `z-index: 100; margin: 0 auto; text-align: center; background-color: red; font-weight: bold;`;
@@ -23,9 +30,8 @@
     },
     onSuccessLoad: function (announcements) {
       window.announcements = announcements;
-      for (const filter of filtersElements) {
-        filter.disabled = false;
-      }
+      window.load.uncheckFilters(filtersElements);
+      window.load.uncheckFilters(filterFeaturesElements);
       window.pins.renderPins(window.pins.createPins(window.announcements.slice(0, MAX_ANNOUNCEMENTS)));
     },
     startLoading: function (onSuccess, onError) {
