@@ -332,6 +332,10 @@ fieldset {
   opacity: 1;
 }
 
+.map__filters select:disabled {
+  cursor: default;
+}
+
 .map--faded .map__filters {
   opacity: 0;
 }
@@ -1245,4 +1249,8 @@ fieldset {
 
 .hidden {
   display: none;
+}
+
+.map__features input:disabled + label {
+  cursor: default;
 }

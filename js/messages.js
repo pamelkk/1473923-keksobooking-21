@@ -3,6 +3,7 @@
 (function () {
   const START_COORDINATE_X = `570px`;
   const START_COORDINATE_Y = `375px`;
+  const URL = `https://21.javascript.pages.academy/keksobooking`;
   const ESC_KEYCODE = 27;
   const LEFT_CLICK = 1;
   const filtersElements = document.querySelectorAll(`.map__filters select`);
@@ -10,7 +11,7 @@
   const mainPinElement = document.querySelector(`.map__pin--main`);
 
   window.messages = {
-    successMessage: function () {
+    successMessage() {
       const successTemplateElement = document.querySelector(`#success`).content;
       const success = successTemplateElement.querySelector(`.success`).cloneNode(true);
       document.body.insertAdjacentElement(`afterbegin`, success);
@@ -26,17 +27,17 @@
         success.remove();
       }
 
-      function OnCloseButtonPress(e) {
+      function onCloseButtonPress(e) {
         if (e.keyCode === ESC_KEYCODE) {
           onCloseButtonClick();
         }
       }
 
-      document.addEventListener(`keydown`, OnCloseButtonPress);
+      document.addEventListener(`keydown`, onCloseButtonPress);
       window.activation.makeInactive();
       window.pins.removePin();
     },
-    errorMessage: function () {
+    errorMessage() {
       const errorTemplateElement = document.querySelector(`#error`).content;
       const error = errorTemplateElement.querySelector(`.error`).cloneNode(true);
       document.body.insertAdjacentElement(`afterbegin`, error);
@@ -56,32 +57,37 @@
         error.remove();
       }
 
-      function OnCloseButtonPress(e) {
+      function onCloseButtonPress(e) {
         if (e.keyCode === ESC_KEYCODE) {
           onCloseButtonClick();
         }
       }
-      document.addEventListener(`keydown`, OnCloseButtonPress);
+      document.addEventListener(`keydown`, onCloseButtonPress);
     },
-    onSubmitSuccess: function () {
+    onSubmitSuccess() {
       const houseFeaturesInputElement = document.querySelector(`#housing-features`);
       const houseFeaturesCheckedElement = houseFeaturesInputElement.querySelectorAll(`input:checked`);
+      const cardElement = document.querySelector(`.map__card`);
       window.messages.successMessage();
       window.form.makeCleanFeaturesFilters(houseFeaturesCheckedElement);
       window.form.makeCleanFilters(filtersElements);
       mainPinElement.style.top = START_COORDINATE_Y;
       mainPinElement.style.left = START_COORDINATE_X;
       window.form.getAddress();
+      if (cardElement) {
+        cardElement.remove();
+      }
     },
-    onSubmitError: function () {
+    onSubmitError() {
       window.messages.errorMessage();
     }
   };
 
   formElement.addEventListener(`submit`, function (evt) {
     evt.preventDefault();
+    window.announcements = null;
     // отправка формы
     const dataForm = new FormData(formElement);
-    window.upload(dataForm, window.messages.onSubmitSuccess, window.messages.onSubmitError);
+    window.sendXhr(URL, window.messages.onSubmitSuccess, window.messages.onSubmitError, dataForm);
   });
 })();

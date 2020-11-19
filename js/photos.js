@@ -6,7 +6,7 @@
 
   window.photos = {
     // Выбор рандомного фитчера и фото
-    getRandomPhotoFeatures: function (items) {
+    getRandomPhotoFeatures(items) {
       let element = 0;
       let begin = window.counting.randomInteger(element, items.length);
       let end = window.counting.randomInteger(element, items.length);
@@ -17,7 +17,7 @@
       return items.slice(begin, end);
     },
     // добавляю фото
-    getPhotoItems: function (items) {
+    getPhotoItems(items) {
       const photoItems = [];
       for (const item of items) {
         const photoItemElement = document.createElement(`img`);
@@ -30,11 +30,11 @@
       }
       return photoItems;
     },
-    renderPhotos: function (elements) {
+    renderPhotos(elements) {
       const fragmentPhotoElement = document.createDocumentFragment();
-      for (const element of elements) {
+      elements.forEach(function (element) {
         fragmentPhotoElement.appendChild(element);
-      }
+      });
       return fragmentPhotoElement;
     }
   };

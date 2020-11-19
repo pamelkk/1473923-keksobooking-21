@@ -13,7 +13,7 @@
   };
 
   window.card = {
-    onCloseButtonClick: function () {
+    onCloseButtonClick() {
       const cardItemElement = document.querySelector(`.map__card`);
       const pinElement = document.querySelector(`.map__pin--active`);
       if (pinElement.classList.contains(`map__pin--active`)) {
@@ -24,12 +24,12 @@
       }
       document.removeEventListener(`keydown`, window.card.onEscButtonPress);
     },
-    onEscButtonPress: function (e) {
+    onEscButtonPress(e) {
       if (e.keyCode === ESC_KEYCODE) {
         window.card.onCloseButtonClick();
       }
     },
-    createCard: function (item, pin) {
+    createCard(item, pin) {
       const cardElement = cardTemplateElement.querySelector(`.map__card`).cloneNode(true);
 
       cardElement.querySelector(`.popup__title`).textContent = item.offer.title;

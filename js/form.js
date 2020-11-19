@@ -22,42 +22,42 @@
 
   window.form = {
     // перевод полей в неактивное/активное состояние
-    makeDisable: function (elements) {
-      for (const element of elements) {
+    makeDisable(elements) {
+      elements.forEach(function (element) {
         element.disabled = true;
-      }
+      });
     },
     // перевод кнопки в неактивное/активное состояние
-    makeDisableButton: function (element) {
+    makeDisableButton(element) {
       element.disabled = true;
     },
-    makeEnable: function (elements) {
-      for (const element of elements) {
+    makeEnable(elements) {
+      elements.forEach(function (element) {
         element.disabled = false;
-      }
+      });
     },
     // перевод кнопки в активное состояние
-    makeEnableButton: function (element) {
+    makeEnableButton(element) {
       element.disabled = false;
     },
     // перевод филтров в неактивное состояние
-    makeCleanFilters: function (elements) {
-      for (const element of elements) {
+    makeCleanFilters(elements) {
+      elements.forEach(function (element) {
         element.value = `any`;
-      }
+      });
     },
     // перевод филтров в неактивное состояние
-    makeCleanFeaturesFilters: function (elements) {
-      for (const element of elements) {
+    makeCleanFeaturesFilters(elements) {
+      elements.forEach(function (element) {
         element.checked = false;
-      }
+      });
     },
     // очистка поля с placeholder после успешной отправки формы
-    makeInputPlaceholder: function (input) {
+    makeInputPlaceholder(input) {
       input.placeholder = `5000`;
     },
     // установка значения поля ввода адреса
-    getAddress: function () {
+    getAddress() {
       const addressInputElement = document.querySelector(`#address`);
       let coordinateX = parseInt(mainPinElement.style.left, 10) + (PIN_WIDTH / 2);
       let coordinateY = parseInt(mainPinElement.style.top, 10) + PIN_HEIGHT;
@@ -163,14 +163,10 @@
   // очистка полей при клике на очистить
   resetElement.addEventListener(`click`, function (evt) {
     const cardElement = document.querySelector(`.map__card`);
-    const houseFeaturesCheckedElement = houseFeaturesInputElement.querySelectorAll(`input:checked`);
     if (cardElement) {
       cardElement.remove();
     }
     evt.preventDefault();
     window.pins.removePin();
-    window.form.makeCleanFeaturesFilters(houseFeaturesCheckedElement);
-    window.form.makeDisable(filtersElements);
-    window.form.getAddress();
   });
 })();

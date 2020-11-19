@@ -21,7 +21,7 @@
       y: evt.clientY
     };
 
-    let moveMouse = function (moveEvt) {
+    let onMouseMove = function (moveEvt) {
       if (evt.which === LEFT_CLICK) {
 
         moveEvt.preventDefault();
@@ -55,15 +55,15 @@
         }
       }
     };
-    let releaseMouse = function (upEvt) {
+    let onMouseUp = function (upEvt) {
       upEvt.preventDefault();
       window.form.getAddress();
 
-      document.removeEventListener(`mousemove`, moveMouse);
-      document.removeEventListener(`mouseup`, releaseMouse);
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mouseup`, onMouseUp);
     };
 
-    document.addEventListener(`mousemove`, moveMouse);
-    document.addEventListener(`mouseup`, releaseMouse);
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mouseup`, onMouseUp);
   });
 })();

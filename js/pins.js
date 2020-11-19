@@ -7,14 +7,14 @@
   const pinListElement = document.querySelector(`.map__pins`);
 
   window.pins = {
-    createPins: function (announcements) {
+    createPins(announcements) {
       const pinItems = [];
-      for (let i = 0; i < announcements.length; i++) {
+      for (const announcement of announcements) {
         const pinCloneElement = pinTemplateElement.querySelector(`.map__pin`).cloneNode(true);
-        pinCloneElement.style.top = announcements[i].location.y - PIN_OFFSET_Y + `px`;
-        pinCloneElement.style.left = announcements[i].location.x - PIN_OFFSET_X + `px`;
-        pinCloneElement.querySelector(`img`).src = announcements[i].author.avatar;
-        pinCloneElement.querySelector(`img`).alt = announcements[i].offer.title;
+        pinCloneElement.style.top = announcement.location.y - PIN_OFFSET_Y + `px`;
+        pinCloneElement.style.left = announcement.location.x - PIN_OFFSET_X + `px`;
+        pinCloneElement.querySelector(`img`).src = announcement.author.avatar;
+        pinCloneElement.querySelector(`img`).alt = announcement.offer.title;
         pinItems.push(pinCloneElement);
 
         pinCloneElement.addEventListener(`click`, function (evt) {
@@ -24,19 +24,19 @@
             cardElement.remove();
             activePinElement.classList.remove(`map__pin--active`);
           }
-          window.card.createCard(announcements[i], evt.currentTarget);
+          window.card.createCard(announcement, evt.currentTarget);
         });
       }
       return pinItems;
     },
-    renderPins: function (items) {
+    renderPins(items) {
       const fragment = document.createDocumentFragment();
-      for (const item of items) {
+      items.forEach(function (item) {
         fragment.appendChild(item);
         pinListElement.appendChild(fragment);
-      }
+      });
     },
-    removePin: function () {
+    removePin() {
       const mapElement = document.querySelector(`.map`);
       const pinsElements = mapElement.querySelectorAll(`.map__pin:not(.map__pin--main)`);
 
